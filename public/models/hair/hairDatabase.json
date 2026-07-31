@@ -1,0 +1,577 @@
+{
+  "version": 1,
+  "note": "发型数据库索引（本文件是发型列表的唯一权威来源）。把 .glb/.gltf 模型放进当前文件夹，并在此登记一项即可生效。modelUrl 指向模型文件；params 是程序化兜底造型（模型文件缺失/加载失败时自动使用）。字段说明见 README 第 5 节。",
+  "categories": [
+    {
+      "id": "short",
+      "label": "短发"
+    },
+    {
+      "id": "medium",
+      "label": "中长发"
+    },
+    {
+      "id": "long",
+      "label": "长发"
+    }
+  ],
+  "models": [
+    {
+      "id": "pixie",
+      "name": "俏皮精灵短发",
+      "category": "short",
+      "tag": "超短 · 干练",
+      "desc": "露出耳朵与颈线，视觉上把重心提到头顶，显脸小、显精神。",
+      "color": "#2a2226",
+      "fit": {
+        "oval": 0.92,
+        "round": 0.62,
+        "square": 0.58,
+        "oblong": 0.55,
+        "heart": 0.88,
+        "diamond": 0.74,
+        "pear": 0.7
+      },
+      "params": {
+        "volume": 1.11,
+        "frontPhi": 1,
+        "sidePhi": 1.4,
+        "backPhi": 1.78,
+        "frontLen": 0.14,
+        "sideLen": 0.06,
+        "backLen": 0.08,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.01,
+        "part": 1,
+        "taper": 0.5
+      }
+    },
+    {
+      "id": "crop",
+      "name": "纹理碎盖短发",
+      "category": "short",
+      "tag": "男士 · 利落",
+      "desc": "顶部保留纹理与蓬松度，两侧收短，非常适合修饰偏宽的下颌轮廓。",
+      "color": "#201c1e",
+      "fit": {
+        "oval": 0.9,
+        "round": 0.72,
+        "square": 0.8,
+        "oblong": 0.6,
+        "heart": 0.78,
+        "diamond": 0.76,
+        "pear": 0.82
+      },
+      "params": {
+        "volume": 1.13,
+        "frontPhi": 0.95,
+        "sidePhi": 1.28,
+        "backPhi": 1.7,
+        "frontLen": 0.16,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.015,
+        "waveFreq": 4,
+        "curl": 0.016,
+        "part": 0,
+        "taper": 0.4
+      }
+    },
+    {
+      "id": "korean",
+      "name": "韩式中分微卷",
+      "category": "short",
+      "tag": "中分 · 蓬松",
+      "desc": "中分两侧微微内扣，能把过宽的额头收进来，同时增加颅顶高度。",
+      "color": "#352218",
+      "fit": {
+        "oval": 0.88,
+        "round": 0.8,
+        "square": 0.74,
+        "oblong": 0.7,
+        "heart": 0.7,
+        "diamond": 0.78,
+        "pear": 0.76
+      },
+      "params": {
+        "volume": 1.16,
+        "frontPhi": 0.92,
+        "sidePhi": 1.46,
+        "backPhi": 1.8,
+        "frontLen": 0.26,
+        "sideLen": 0.22,
+        "backLen": 0.18,
+        "wave": 0.045,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.55
+      }
+    },
+    {
+      "id": "bob",
+      "name": "法式波波头",
+      "category": "medium",
+      "tag": "内扣 · 经典",
+      "desc": "发尾在下颌线附近内扣，用弧线柔化棱角，是方脸的经典解法。",
+      "color": "#241d1f",
+      "fit": {
+        "oval": 0.93,
+        "round": 0.66,
+        "square": 0.86,
+        "oblong": 0.84,
+        "heart": 0.8,
+        "diamond": 0.82,
+        "pear": 0.72
+      },
+      "params": {
+        "volume": 1.1,
+        "frontPhi": 0.98,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0,
+        "sideLen": 0.5,
+        "backLen": 0.56,
+        "wave": 0.03,
+        "waveFreq": 2,
+        "curl": 0.004,
+        "part": 1,
+        "taper": 0.78
+      }
+    },
+    {
+      "id": "bobBangs",
+      "name": "齐刘海波波头",
+      "category": "medium",
+      "tag": "刘海 · 减龄",
+      "desc": "厚刘海把额头纵向长度切短，对长脸、宽额头特别友好。",
+      "color": "#1f1a1c",
+      "fit": {
+        "oval": 0.86,
+        "round": 0.58,
+        "square": 0.72,
+        "oblong": 0.92,
+        "heart": 0.9,
+        "diamond": 0.84,
+        "pear": 0.66
+      },
+      "params": {
+        "volume": 1.1,
+        "frontPhi": 1.02,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.25,
+        "sideLen": 0.52,
+        "backLen": 0.58,
+        "wave": 0.022,
+        "waveFreq": 2,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.72
+      }
+    },
+    {
+      "id": "lob",
+      "name": "侧分中长发",
+      "category": "medium",
+      "tag": "侧分 · 温柔",
+      "desc": "三七侧分打破面部对称，斜向线条能显著拉长圆润的脸部轮廓。",
+      "color": "#3a2718",
+      "fit": {
+        "oval": 0.94,
+        "round": 0.9,
+        "square": 0.82,
+        "oblong": 0.74,
+        "heart": 0.82,
+        "diamond": 0.8,
+        "pear": 0.84
+      },
+      "params": {
+        "volume": 1.12,
+        "frontPhi": 0.9,
+        "sidePhi": 1.52,
+        "backPhi": 1.88,
+        "frontLen": 0.26,
+        "sideLen": 0.86,
+        "backLen": 0.92,
+        "wave": 0.055,
+        "waveFreq": 2.5,
+        "curl": 0.005,
+        "part": 1,
+        "taper": 0.68,
+        "partStrength": 0.22
+      }
+    },
+    {
+      "id": "airyShoulder",
+      "name": "空气刘海齐肩发",
+      "category": "medium",
+      "tag": "空气感 · 甜",
+      "desc": "轻薄空气刘海若隐若现，既能遮住额头又不显厚重，配合齐肩层次很显软萌。",
+      "color": "#4a3220",
+      "fit": {
+        "oval": 0.9,
+        "round": 0.74,
+        "square": 0.78,
+        "oblong": 0.9,
+        "heart": 0.86,
+        "diamond": 0.86,
+        "pear": 0.74
+      },
+      "params": {
+        "volume": 1.13,
+        "frontPhi": 1,
+        "sidePhi": 1.52,
+        "backPhi": 1.88,
+        "frontLen": 0.24,
+        "sideLen": 0.78,
+        "backLen": 0.88,
+        "wave": 0.06,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.6,
+        "layers": [
+          {
+            "lenScale": 0.55,
+            "volume": 1.05
+          }
+        ]
+      }
+    },
+    {
+      "id": "longStraight",
+      "name": "中分长直发",
+      "category": "long",
+      "tag": "直发 · 气质",
+      "desc": "两侧垂顺的直发形成纵向线条，能有效收窄面部横向宽度。",
+      "color": "#191517",
+      "fit": {
+        "oval": 0.92,
+        "round": 0.88,
+        "square": 0.8,
+        "oblong": 0.62,
+        "heart": 0.78,
+        "diamond": 0.76,
+        "pear": 0.86
+      },
+      "params": {
+        "volume": 1.08,
+        "frontPhi": 0.88,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0,
+        "sideLen": 1.55,
+        "backLen": 1.7,
+        "wave": 0.03,
+        "waveFreq": 1.5,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.55
+      }
+    },
+    {
+      "id": "longWave",
+      "name": "慵懒大波浪",
+      "category": "long",
+      "tag": "卷发 · 蓬松",
+      "desc": "中下段大卷带来横向体积，把过长的脸型比例拉回平衡，也能补足窄下颌的量感。",
+      "color": "#5a3a1e",
+      "fit": {
+        "oval": 0.93,
+        "round": 0.6,
+        "square": 0.84,
+        "oblong": 0.94,
+        "heart": 0.9,
+        "diamond": 0.88,
+        "pear": 0.68
+      },
+      "params": {
+        "volume": 1.15,
+        "frontPhi": 0.92,
+        "sidePhi": 1.54,
+        "backPhi": 1.9,
+        "frontLen": 0.18,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.13,
+        "waveFreq": 4.5,
+        "curl": 0.012,
+        "part": 1,
+        "taper": 0.42,
+        "partStrength": 0.16
+      }
+    },
+    {
+      "id": "wolf",
+      "name": "层次狼尾",
+      "category": "long",
+      "tag": "层次 · 个性",
+      "desc": "上层蓬松、下层轻薄的强层次结构，能同时兼顾颅顶高度与颈部线条。",
+      "color": "#2b2124",
+      "fit": {
+        "oval": 0.88,
+        "round": 0.84,
+        "square": 0.76,
+        "oblong": 0.78,
+        "heart": 0.82,
+        "diamond": 0.8,
+        "pear": 0.88
+      },
+      "params": {
+        "volume": 1.18,
+        "frontPhi": 0.96,
+        "sidePhi": 1.46,
+        "backPhi": 1.92,
+        "frontLen": 0.26,
+        "sideLen": 0.6,
+        "backLen": 1.35,
+        "wave": 0.08,
+        "waveFreq": 4,
+        "curl": 0.014,
+        "part": 0,
+        "taper": 0.72,
+        "layers": [
+          {
+            "lenScale": 0.4,
+            "volume": 1.07
+          }
+        ]
+      }
+    },
+    {
+      "id": "ponytail",
+      "name": "高马尾",
+      "category": "long",
+      "tag": "扎发 · 清爽",
+      "desc": "把发际线提高、露出完整轮廓，视觉上直接给脸型减负，显得干练又年轻。",
+      "color": "#1e1a1c",
+      "fit": {
+        "oval": 0.95,
+        "round": 0.7,
+        "square": 0.64,
+        "oblong": 0.6,
+        "heart": 0.74,
+        "diamond": 0.7,
+        "pear": 0.78
+      },
+      "params": {
+        "volume": 1.06,
+        "frontPhi": 0.82,
+        "sidePhi": 1.3,
+        "backPhi": 1.72,
+        "frontLen": 0.06,
+        "sideLen": 0.05,
+        "backLen": 0.06,
+        "wave": 0.02,
+        "waveFreq": 2,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "ponytail"
+      }
+    },
+    {
+      "id": "bun",
+      "name": "慵懒丸子头",
+      "category": "medium",
+      "tag": "扎发 · 甜酷",
+      "desc": "头顶的丸子把视觉高度往上拉，对圆脸和短脸型的比例修饰非常直接。",
+      "color": "#241c20",
+      "fit": {
+        "oval": 0.92,
+        "round": 0.86,
+        "square": 0.7,
+        "oblong": 0.52,
+        "heart": 0.76,
+        "diamond": 0.72,
+        "pear": 0.82
+      },
+      "params": {
+        "volume": 1.06,
+        "frontPhi": 0.86,
+        "sidePhi": 1.32,
+        "backPhi": 1.7,
+        "frontLen": 0.1,
+        "sideLen": 0.12,
+        "backLen": 0.08,
+        "wave": 0.02,
+        "waveFreq": 2,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "bun"
+      }
+    },
+    {
+      "id": "afro",
+      "name": "蓬松羊毛卷",
+      "category": "medium",
+      "tag": "卷度 · 张扬",
+      "desc": "球形轮廓在两侧制造强烈体积感，最适合需要补宽的窄额头与尖下巴。",
+      "color": "#2f2320",
+      "fit": {
+        "oval": 0.84,
+        "round": 0.48,
+        "square": 0.62,
+        "oblong": 0.9,
+        "heart": 0.86,
+        "diamond": 0.84,
+        "pear": 0.6
+      },
+      "params": {
+        "volume": 1.34,
+        "frontPhi": 1,
+        "sidePhi": 1.58,
+        "backPhi": 1.88,
+        "frontLen": 0.22,
+        "sideLen": 0.34,
+        "backLen": 0.36,
+        "wave": 0.055,
+        "waveFreq": 5,
+        "curl": 0.055,
+        "part": 0,
+        "taper": 0.15,
+        "hangPad": 1.2
+      }
+    },
+    {
+      "id": "demo",
+      "name": "演示发型(圆锥+圆柱)",
+      "category": "short",
+      "tag": "调试 · 占位",
+      "desc": "用基础几何体拼的最简短发，专供调试：若它能正常显示并贴合头部，说明渲染与对齐链路正常。",
+      "color": "#2b2230",
+      "simple": true,
+      "fit": {
+        "oval": 0.7,
+        "round": 0.7,
+        "square": 0.7,
+        "oblong": 0.7,
+        "heart": 0.7,
+        "diamond": 0.7,
+        "pear": 0.7
+      }
+    },
+    {
+      "id": "bob3d",
+      "name": "波波头 (真实3D模型)",
+      "category": "medium",
+      "tag": "真实模型 · 示例",
+      "desc": "示例：把 bob.glb 放进本文件夹后即可加载真实 3D 模型；模型缺失时自动回退到程序化波波头。",
+      "color": "#241d1f",
+      "modelUrl": "./public/models/hair/bob.glb",
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": {
+        "oval": 0.93,
+        "round": 0.66,
+        "square": 0.86,
+        "oblong": 0.84,
+        "heart": 0.8,
+        "diamond": 0.82,
+        "pear": 0.72
+      },
+      "params": {
+        "volume": 1.1,
+        "frontPhi": 0.98,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0,
+        "sideLen": 0.5,
+        "backLen": 0.56,
+        "wave": 0.03,
+        "waveFreq": 2,
+        "curl": 0.004,
+        "part": 1,
+        "taper": 0.78
+      }
+    },
+    {
+      "id": "longwave3d",
+      "name": "大波浪 (真实3D模型)",
+      "category": "long",
+      "tag": "真实模型 · 示例",
+      "desc": "示例：把 long_wave.glb 放进本文件夹后即可加载真实 3D 模型；模型缺失时自动回退到程序化大波浪。",
+      "color": "#5a3a1e",
+      "modelUrl": "./public/models/hair/long_wave.glb",
+      "modelWidth": 1.1,
+      "modelOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": {
+        "oval": 0.93,
+        "round": 0.6,
+        "square": 0.84,
+        "oblong": 0.94,
+        "heart": 0.9,
+        "diamond": 0.88,
+        "pear": 0.68
+      },
+      "params": {
+        "volume": 1.15,
+        "frontPhi": 0.92,
+        "sidePhi": 1.54,
+        "backPhi": 1.9,
+        "frontLen": 0.18,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.13,
+        "waveFreq": 4.5,
+        "curl": 0.012,
+        "part": 1,
+        "taper": 0.42,
+        "partStrength": 0.16
+      }
+    },
+    {
+      "id": "ponytail3d",
+      "name": "高马尾 (真实3D模型)",
+      "category": "long",
+      "tag": "真实模型 · 示例",
+      "desc": "示例：把 ponytail.glb 放进本文件夹后即可加载真实 3D 模型；模型缺失时自动回退到程序化高马尾。",
+      "color": "#1e1a1c",
+      "modelUrl": "./public/models/hair/ponytail.glb",
+      "modelWidth": 1.06,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.08,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": {
+        "oval": 0.95,
+        "round": 0.7,
+        "square": 0.64,
+        "oblong": 0.6,
+        "heart": 0.74,
+        "diamond": 0.7,
+        "pear": 0.78
+      },
+      "params": {
+        "volume": 1.06,
+        "frontPhi": 0.82,
+        "sidePhi": 1.3,
+        "backPhi": 1.72,
+        "frontLen": 0.06,
+        "sideLen": 0.05,
+        "backLen": 0.06,
+        "wave": 0.02,
+        "waveFreq": 2,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "ponytail"
+      }
+    }
+  ]
+}

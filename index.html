@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 智能发型推荐 · AR 实时试戴</title>
+<meta name="description" content="基于 MediaPipe + Three.js 的浏览器端脸型分析与 3D 发型 AR 试戴，所有数据本地处理。" />
+<link rel="stylesheet" href="./css/style.css" />
+
+<!--
+  Three.js 通过 importmap 以 ES Module 方式引入。
+  如需完全离线运行，可把 three 的 build/ 与 examples/jsm/ 下载到本地 vendor/ 目录并修改下面的路径。
+-->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="26" height="26">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#ec4899"/>
+        </linearGradient></defs>
+        <path d="M16 3c-6 0-10 4.2-10 10.5 0 3 .6 5 .6 5S5 20 5 23.5C5 27 8 29 11 29h10c3 0 6-2 6-5.5 0-3.5-1.6-5-1.6-5s.6-2 .6-5C26 7.2 22 3 16 3z" fill="url(#lg)"/>
+        <circle cx="12" cy="17" r="1.4" fill="#fff"/><circle cx="20" cy="17" r="1.4" fill="#fff"/>
+      </svg>
+    </span>
+    <div class="brand-text">
+      <h1>AI 智能发型推荐</h1>
+      <p>脸型分析 · 3D 发型 AR 实时试戴</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-privacy" title="所有面部数据均在本机浏览器内计算，不会上传到任何服务器">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>
+      </svg>
+      本地处理 · 零上传
+    </span>
+    <span class="badge badge-fps" id="fpsBadge">-- FPS</span>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ============ 左：摄像头 / AR 舞台 ============ -->
+  <section class="stage-col">
+    <div class="stage" id="stage">
+      <video id="video" playsinline muted autoplay></video>
+      <!-- Three.js 渲染 3D 发型 -->
+      <canvas id="arCanvas"></canvas>
+      <!-- 2D 叠加层：关键点 / 网格调试 -->
+      <canvas id="overlayCanvas"></canvas>
+
+      <!-- 未开启摄像头时的引导层 -->
+      <div class="stage-cover" id="stageCover">
+        <div class="cover-inner">
+          <div class="cover-icon">
+            <svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+            </svg>
+          </div>
+          <h2>开启摄像头，开始智能试发</h2>
+          <p>浏览器会请求摄像头权限。视频画面与面部关键点<strong>全部在本机处理</strong>，不会离开你的电脑。</p>
+          <button class="btn btn-primary btn-lg" id="startBtn">开启摄像头</button>
+          <div class="cam-select">
+            <label for="camSelect">选择摄像头（可选）</label>
+            <select id="camSelect"><option value="">系统默认摄像头</option></select>
+          </div>
+          <p class="cover-tip">建议使用 Chrome / Edge，需通过 <code>http://localhost</code> 或 https 访问（双击 HTML 用 file:// 打开将无法使用摄像头）</p>
+        </div>
+      </div>
+
+      <!-- 加载 / 错误提示 -->
+      <div class="stage-cover stage-cover--soft hidden" id="loadingCover">
+        <div class="cover-inner">
+          <div class="spinner"></div>
+          <h2 id="loadingText">正在加载人脸检测模型…</h2>
+          <p class="cover-tip">首次加载需要从 CDN 拉取约 3MB 模型文件</p>
+        </div>
+      </div>
+      <div class="stage-cover stage-cover--soft hidden" id="errorCover">
+        <div class="cover-inner">
+          <div class="cover-icon cover-icon--error">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"/><path d="M12 7v6M12 16.5v.5"/>
+            </svg>
+          </div>
+          <h2>出了点问题</h2>
+          <p id="errorText">无法访问摄像头。</p>
+          <details class="diag">
+            <summary>环境诊断信息（帮你定位打不开的原因）</summary>
+            <pre id="diagText"></pre>
+          </details>
+          <button class="btn btn-ghost" id="retryBtn">重试</button>
+        </div>
+      </div>
+
+      <!-- 画面内的状态提示 -->
+      <div class="hud hidden" id="hud">
+        <span class="hud-pill" id="hudStatus">正在寻找人脸…</span>
+      </div>
+    </div>
+
+    <!-- 舞台下方控制条 -->
+    <div class="toolbar">
+      <button class="btn btn-primary" id="toggleCamBtn" disabled>关闭摄像头</button>
+      <button class="btn" id="snapBtn" disabled>
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.4"/>
+        </svg>
+        拍照保存
+      </button>
+      <label class="switch"><input type="checkbox" id="meshChk"><span></span>显示关键点</label>
+      <label class="switch"><input type="checkbox" id="occChk" checked><span></span>头部遮挡</label>
+      <label class="switch"><input type="checkbox" id="ecoChk"><span></span>省电模式</label>
+      <label class="switch"><input type="checkbox" id="debugChk"><span></span>调试标记</label>
+      <label class="switch"><input type="checkbox" id="testChk"><span></span>测试模型</label>
+    </div>
+
+    <p class="privacy-note">
+      隐私说明：本页面不包含任何网络上传逻辑。摄像头视频流只写入本机 <code>&lt;video&gt;</code> 元素，
+      MediaPipe 的推理在浏览器 WASM/WebGL 中完成，关键点坐标仅存在于内存里，页面关闭即销毁。
+    </p>
+  </section>
+
+  <!-- ============ 右：分析 / 推荐 / 微调 ============ -->
+  <aside class="side-col">
+
+    <!-- 脸型分析 -->
+    <div class="card">
+      <div class="card-head">
+        <h3>脸型分析</h3>
+        <span class="chip" id="shapeConf">等待检测</span>
+      </div>
+      <div class="shape-result">
+        <div class="shape-icon" id="shapeIcon"></div>
+        <div class="shape-text">
+          <strong id="shapeName">--</strong>
+          <span id="shapeDesc">请正对摄像头，保持面部完整出现在画面中</span>
+        </div>
+      </div>
+      <div class="metrics" id="metrics"></div>
+      <details class="mini-details">
+        <summary>其它脸型可能性</summary>
+        <div class="alt-list" id="altList"></div>
+      </details>
+    </div>
+
+    <!-- 发型推荐 -->
+    <div class="card">
+      <div class="card-head">
+        <h3>推荐发型</h3>
+        <div class="seg" id="filterSeg">
+          <button class="seg-btn active" data-filter="all">全部</button>
+          <button class="seg-btn" data-filter="short">短发</button>
+          <button class="seg-btn" data-filter="medium">中长发</button>
+          <button class="seg-btn" data-filter="long">长发</button>
+        </div>
+      </div>
+      <div class="style-grid" id="styleGrid"></div>
+    </div>
+
+    <!-- 发色 + 微调 -->
+    <div class="card">
+      <div class="card-head"><h3>发色与微调</h3>
+        <button class="link-btn" id="resetTuneBtn">重置</button>
+      </div>
+      <div class="swatches" id="swatches"></div>
+      <div class="sliders">
+        <label>上下位置 <input type="range" id="tuneY" min="-0.3" max="0.3" step="0.005" value="0"><span data-for="tuneY">0.00</span></label>
+        <label>前后位置 <input type="range" id="tuneZ" min="-0.3" max="0.3" step="0.005" value="0"><span data-for="tuneZ">0.00</span></label>
+        <label>整体大小 <input type="range" id="tuneS" min="0.8" max="1.3" step="0.005" value="1"><span data-for="tuneS">1.00</span></label>
+      </div>
+      <p class="hint">不同人的头骨比例略有差异，可用滑块把发型对齐到最自然的位置。</p>
+    </div>
+
+    <!-- 发型位置微调（X/Y/Z） -->
+    <div class="card">
+      <div class="card-head"><h3>发型位置微调</h3>
+        <span class="chip">真实模型对齐</span>
+      </div>
+      <p class="hint">单位：头宽。换上真实 3D 模型后，用它把发型精确"戴"到头上（左右 / 上下 / 前后）。</p>
+      <div class="sliders">
+        <label>左右 X <input type="range" id="offsetX" min="-0.4" max="0.4" step="0.005" value="0"><span data-for="offsetX">0.00</span></label>
+        <label>上下 Y <input type="range" id="offsetY" min="-0.4" max="0.4" step="0.005" value="0"><span data-for="offsetY">0.00</span></label>
+        <label>前后 Z <input type="range" id="offsetZ" min="-0.4" max="0.4" step="0.005" value="0"><span data-for="offsetZ">0.00</span></label>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<footer class="footer">
+  <span>MediaPipe FaceLandmarker · Three.js · 纯前端实现</span>
+  <span>提示：把 .glb 发型模型放进 <code>public/models/hair/</code> 并在 <code>hairDatabase.json</code> 中登记一项（填 <code>modelUrl</code>）即可加载真实 3D 发型。</span>
+</footer>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
