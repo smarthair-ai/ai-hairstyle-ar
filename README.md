@@ -230,3 +230,33 @@ node tools/add_hair_model.mjs --url "https://.../hair.glb" --id longwave3d --nam
 - 脸型判断基于 2D 投影的几何比例，是**风格建议**而非精确测量；发际线位置（关键点 `10`）因人而异，会影响"脸长"指标；
 - 程序化发型是风格化造型，不追求写实发丝；需要写实效果请挂载真实 `.glb` 模型；
 - 目前只追踪一张人脸（`numFaces: 1`），多人场景下会选择置信度最高的那张。
+
+---
+
+## 10. 部署（GitHub + Vercel）
+
+本项目是**纯静态站点**（无需构建），可直接部署到 Vercel。
+
+### 方式 A：用 GitHub 账号一键部署
+1. 把本仓库推到 GitHub（见下方命令）；
+2. 打开 https://vercel.com/new → 选你的仓库 → Framework 选 **Other** → 直接 Deploy；
+3. Vercel 会自动用根目录的 `vercel.json`（`outputDirectory: "."`）把它当作静态站点发布，分配一个 `https` 域名，摄像头权限正常工作。
+
+### 方式 B：Vercel CLI
+```bash
+npm i -g vercel        # 或 npx vercel
+vercel login           # 浏览器授权
+vercel --prod          # 部署到生产
+```
+
+### 推送到 GitHub
+```bash
+git remote add origin https://github.com/<你的用户名>/<仓库名>.git
+git branch -M main
+git push -u origin main
+```
+> 提交作者邮箱可在本地改：`git config user.email "you@example.com"`。
+
+### 说明
+- 人脸关键点模型走 CDN（jsDelivr）加载，Vercel 的 https 环境下可用；如需完全离线，先跑 `node tools/download_model.mjs` 把模型放进 `assets/models/`（该文件已被 `.gitignore` 忽略，不进仓库）。
+- `public/models/hair/` 里示例的 `.glb` 需你自行下载放入后才会显示真实 3D 发型；缺失时自动回退到程序化兜底。
