@@ -260,3 +260,36 @@ git push -u origin main
 ### 说明
 - 人脸关键点模型走 CDN（jsDelivr）加载，Vercel 的 https 环境下可用；如需完全离线，先跑 `node tools/download_model.mjs` 把模型放进 `assets/models/`（该文件已被 `.gitignore` 忽略，不进仓库）。
 - `public/models/hair/` 里示例的 `.glb` 需你自行下载放入后才会显示真实 3D 发型；缺失时自动回退到程序化兜底。
+
+## 11. 添加发型模型（部署后更新）
+
+站点已部署在 GitHub Pages（分支部署）。往项目里加发型模型后，**push 到 `main` 分支即会自动重新发布**（约 1 分钟，浏览器记得强制刷新 `Ctrl/Cmd+Shift+R` 清缓存）。
+
+### 步骤 1：获取模型
+从 README 第 5 节的网站（Meshy / Sketchfab / Poly Pizza / Quaternius 等）下载 `.glb` 或 `.gltf`，注意选 **Free / CC0 / CC-BY** 等可商用授权。单个文件建议 **< 100 MB**（GitHub 免费账户硬上限，超大文件请用 Git LFS 或外部 CDN）。
+
+### 步骤 2：接入模型（二选一）
+
+**方式 A — 用脚本（推荐，已带格式校验）**
+```bash
+node tools/add_hair_model.mjs --file "路径/你的发型.glb" \
+  --id myhair1 --name "我的发型" --cat medium --color "#3a2a22"
+# 或直链接入： --url "https://.../hair.glb"
+```
+脚本会把文件复制到 `public/models/hair/`、校验格式（`.glb` 查 magic / `.gltf` 解析 JSON）、并自动写入 `hairDatabase.json`。
+
+**方式 B — 手动**
+1. 把 `.glb` 放进 `public/models/hair/`；
+2. 在 `hairDatabase.json` 的 `models` 数组加一项（参照文件中 `bob3d` 示例），填写 `modelUrl`、`categories`、`modelWidth`、`modelOffset`、`modelRotY` 等字段。
+
+### 步骤 3：提交并发布
+```bash
+git add -A
+git commit -m "add hair model xxx"
+git push origin main      # 触发 GitHub Pages 自动重建
+```
+
+### 步骤 4：网页试戴
+打开站点 → 开启摄像头 → 点分类按钮加载该发型 → 用「发型位置微调」**X / Y / Z 滑块**把发型拖到头顶对齐。若初始位置仍偏，可改 `hairDatabase.json` 里的 `modelOffset` / `modelRotY` 后重新 push。
+
+> 嫌命令行麻烦？直接把 `.glb` 文件或下载链接发给我，我帮你接入、提交并部署好，你只管去网页试戴。
