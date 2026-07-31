@@ -572,6 +572,1183 @@
         "taper": 0.5,
         "extra": "ponytail"
       }
+    },
+    {
+      "id": "h01",
+      "name": "韩式高层次长发（八字刘海气垫烫）",
+      "description": "中长发高层次剪裁，搭配柔和八字刘海，发尾轻微气垫大弯，当下热门氛围感长发。",
+      "source": "网络美发公开素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生、通勤上班族，想要修饰颧骨、下颌宽大人群",
+      "features": [
+        "拉高颅顶",
+        "遮挡太阳穴凹陷",
+        "弱化脸部轮廓棱角",
+        "不挑穿搭风格"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h01.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h02",
+      "name": "法式空气刘海锁骨层次直发（初恋短发）",
+      "description": "高层次法式刘海锁骨直短发，内收结构优化面部轮廓，适配多数脸型",
+      "source": "网络发型素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生 年轻上班族",
+      "features": [
+        "高颅顶层次剪裁搭配法式轻薄刘海",
+        "发尾内收轻盈利落",
+        "修饰各类脸型",
+        "吹干即可塑形",
+        "日常打理简单"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h02.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h03",
+      "name": "齐刘海利落一刀切直款短发（日系漫画一刀切）",
+      "description": "经典厚齐刘海齐尾BOB短发，线条利落规整，黑发素雅耐看，紧致修饰脸部宽度，打理简便，风格清纯温婉。",
+      "source": "网络发型素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生、通勤简约、日系温柔、文静乖巧穿搭人群",
+      "features": [
+        "厚款齐眉法式齐刘海",
+        "密度均匀",
+        "规整不毛躁",
+        "完整遮盖上庭额头",
+        "下巴平齐短发",
+        "不拖沓",
+        "不压身高",
+        "适配绝大多数小个子"
+      ],
+      "difficulty": "低等",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h03.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h04",
+      "name": "高层次狼尾碎剪中短发",
+      "description": "日系狼尾层次中短发，顶部蓬松增高颅顶，两侧碎发修饰颧骨下颌，后区长短狼尾结构，个性显瘦易打理",
+      "source": "网络发型素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "菱形脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生、日常通勤上班族，中性少年风（最契合）",
+      "features": [
+        "顶部高蓬松层次",
+        "两侧内收碎剪",
+        "后段狼尾长短落差",
+        "无刻意烫卷",
+        "依靠剪裁形成自然凌乱直向毛流质感"
+      ],
+      "difficulty": "高等",
+      "difficultyLevel": "hard",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h04.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h05",
+      "name": "法式羊毛卷长发",
+      "description": "法式羊毛卷长发，全头细密小卷，自带蓬松高颅顶，搭配法式碎刘海，慵懒复古，非常适合头发偏少的女生。",
+      "source": "网络素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "适合头发细软偏少、颅顶扁平，追求复古氛围感；大学生、年轻上班族",
+      "features": [
+        "全头细密小卷",
+        "发根蓬松垫高颅顶",
+        "法式碎刘海",
+        "显著增加视觉发量",
+        "风格慵懒复古",
+        "需要日常简单打理",
+        "疏于打理容易毛躁"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h05.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h06",
+      "name": "高层次氛围感黑长直",
+      "description": "高层次氛围感黑长直，韩系温柔风，高层次剪裁让长发轻盈灵动，漫画刘海搭配鬓角碎发修饰脸型，百搭耐看。",
+      "source": "网络素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生、日常通勤都合适。",
+      "features": [
+        "高层次剪裁",
+        "长发轻盈不笨重",
+        "漫画刘海+鬓角碎发修饰脸型",
+        "直发顺滑有光泽",
+        "头顶微蓬不贴头皮",
+        "简约百搭"
+      ],
+      "difficulty": "简单",
+      "difficultyLevel": "easy",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h06.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h07",
+      "name": "中分蛋卷短发",
+      "description": "头顶高层次剪裁垫高颅顶，发根蓬松显脸小；发尾轻薄碎剪，两侧层次内扣，收紧脸颊线条，规避短发臃肿外翻问题。",
+      "source": "网络发型素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "上班族、学生党都适配，适合韩系温柔风、知性通勤风、轻熟甜美风",
+      "features": [
+        "八字细碎刘海修饰额头与眉眼",
+        "打理简单",
+        "吹干抹少量弹力素即可维持卷度",
+        "兼具减龄效果与日常实用性"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h07.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h08",
+      "name": "港风复古水波纹大波浪长发",
+      "description": "港风水波纹长发，规整流畅S型水波纹卷，侧分八字刘海，复古大气，精致御姐风。",
+      "source": "网络素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "偏爱复古御姐气质；适合约会、拍照、正式场合；发量中等为佳。",
+      "features": [
+        "工整流畅水波纹S大卷",
+        "卷形清晰立体",
+        "线条整齐",
+        "侧分八字刘海修饰额头颧骨",
+        "发丝光亮顺滑",
+        "蓬松饱满",
+        "复古精致",
+        "相比普通韩式大波浪更隆重成熟"
+      ],
+      "difficulty": "偏高",
+      "difficultyLevel": "hard",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h08.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h09",
+      "name": "公主切长直发",
+      "description": "日系二次元公主切，厚齐刘海，脸颊两侧一刀切短发片，长发顺直，甜酷漫画风。",
+      "source": "网络素材",
+      "suitableFaceShapes": [
+        "圆脸"
+      ],
+      "suitablePeople": "喜欢日系、二次元甜酷风格；追求辨识度高的个性发型。",
+      "features": [
+        "厚齐刘海",
+        "脸颊两侧一刀切姬发",
+        "线条整齐利落",
+        "下半部分低层次长直发",
+        "顺滑垂坠",
+        "风格个性",
+        "二次元氛围感强"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h09.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h10",
+      "name": "高层次鲻鱼头女短发",
+      "description": "整体高层次碎剪结构，头顶层次蓬松抬高颅顶，解决发根扁塌问题；两侧发丝轻柔收窄，修饰脸颊宽度；前后长短落差鲜明，前短后长是鲻鱼头核心特征，后颈长尾碎发利落飘逸。搭配轻薄细碎空气刘海，通透不闷额头",
+      "source": "网络发型素材",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "菱形脸",
+        "长脸"
+      ],
+      "suitablePeople": "气质主打日系少年感、中性清爽风，适配学生、日常通勤人群",
+      "features": [
+        "黑发原生色系低调日常",
+        "无需频繁染发",
+        "打理门槛极低",
+        "吹干简单抓揉即可定型",
+        "兼顾个性小众造型与日常简约实用性",
+        "修饰脸型能力出众"
+      ],
+      "difficulty": "中上等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h10.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h11",
+      "name": "纹理飞机头",
+      "description": "拉高颅顶、增强立体感",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "菱形脸",
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h11.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h12",
+      "name": "常春藤短发",
+      "description": "自然稳重，修饰额头比例",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h12.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h13",
+      "name": "低渐变寸头",
+      "description": "清爽利落，修饰下颌线",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "学生、通勤上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "低等",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h13.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h14",
+      "name": "中渐变短发",
+      "description": "提亮侧面，增加五官立体度",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸"
+      ],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "低等",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h14.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h15",
+      "name": "寸头",
+      "description": "极简好驾驭，强化脸部轮廓，自带少年感",
+      "source": "AI生成",
+      "suitableFaceShapes": [],
+      "suitablePeople": "学生、通勤上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "低等",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h15.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h16",
+      "name": "侧分短发",
+      "description": "拉长脸型，提升成熟感",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "菱形脸",
+        "瓜子脸"
+      ],
+      "suitablePeople": "学生、通勤上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h16.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h17",
+      "name": "短羊毛卷",
+      "description": "发量视觉倍增，柔和硬朗脸部线条",
+      "source": "AI生成",
+      "suitableFaceShapes": [],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "高等",
+      "difficultyLevel": "hard",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h17.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h18",
+      "name": "中分微卷",
+      "description": "柔化脸侧线条，增加文艺感",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "圆脸",
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "高等",
+      "difficultyLevel": "hard",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h18.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h19",
+      "name": "纹理背头",
+      "description": "增强颅顶，凸显成熟气质",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "菱形脸",
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "学生、通勤上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "高等",
+      "difficultyLevel": "hard",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h19.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h20",
+      "name": "短碎刺头",
+      "description": "层次轻盈，弱化脸部圆润感，日常元气百搭",
+      "source": "AI生成",
+      "suitableFaceShapes": [
+        "圆脸"
+      ],
+      "suitablePeople": "学生、年轻上班族",
+      "features": [
+        "同原始介绍"
+      ],
+      "difficulty": "中等",
+      "difficultyLevel": "medium",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h20.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h21",
+      "name": "高层次狼尾锁骨短发（挑染款）",
+      "description": "中短发长度至锁骨位置，整体高层次剪裁，发尾碎剪打造狼尾层次；八字中分刘海修饰颧骨，搭配面部轮廓浅灰高光挑染，底色为暖棕色调。",
+      "source": "波波网美发实拍案例",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "上班族、学生，喜欢简约韩系氛围感，想提升发型立体感的女性",
+      "features": [
+        "高层次剪裁增加蓬松度",
+        "改善头发贴头皮问题",
+        "挑染增强层次感",
+        "不用全头漂发",
+        "刘海柔和修饰脸颊",
+        "风格百搭",
+        "通勤",
+        "日常均可"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h21.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h22",
+      "name": "日系柔和圆弧轮廓短发",
+      "description": "低层次圆弧短发，两侧收紧保留厚度不铲光，轻薄空气碎刘海搭配胎毛碎丝修饰颧骨，整体外轮廓圆润流畅，发尾柔和去角无生硬切口；发色暖调红棕（栗棕）。",
+      "source": "日系美发沙龙实拍",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "大学生、职场女性；偏爱简约清爽风格，不想复杂打理的女生",
+      "features": [
+        "线条干净高级",
+        "弱化脸部棱角",
+        "凸显五官",
+        "风格温柔干练",
+        "不挑穿搭",
+        "通勤日常都适配",
+        "视觉上拉长颈部线条"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h22.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h23",
+      "name": "层次锁骨水母头（直款）",
+      "description": "长度落在锁骨位置，齐厚空气齐刘海，脸部两侧保留长条修饰发丝，整体带有内层次剪裁，发尾轻微内收；发色为红棕树莓色，直发质感。",
+      "source": "波波网美发实拍案例",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸"
+      ],
+      "suitablePeople": "学生、喜欢甜酷风格青年女性，日常不想频繁烫卷的人群",
+      "features": [
+        "两侧发丝修饰下颌与颧骨",
+        "有效弱化脸部宽度",
+        "直款清爽干净",
+        "兼具日系甜妹氛围",
+        "层次自然",
+        "不会显得厚重闷脸"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h23.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h24",
+      "name": "日系蘑菇短发（波波头改良款）",
+      "description": "齐下巴短款波波头，厚重整齐齐刘海，发尾做外翻柔和碎剪，整体呈圆润蘑菇轮廓；中棕褐色，带有自然蓬松层次。",
+      "source": "美发沙龙实拍案例",
+      "suitableFaceShapes": [
+        "圆脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "学生、喜欢日系清新风格的年轻女生",
+      "features": [
+        "轮廓圆润可爱",
+        "齐刘海弱化脸部纵向长度",
+        "两侧碎发修饰下颌线条",
+        "风格元气减龄"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h24.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h25",
+      "name": "彩色渐变拳击辫脏辫（女款）",
+      "description": "头皮分区编织细拳击辫，衔接彩色化纤发丝做成长款脏辫，末端搭配彩色流苏装饰；单侧垂放，风格个性潮流。",
+      "source": "美发门店实拍案例",
+      "suitableFaceShapes": [
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "潮流青年、喜爱嘻哈、音乐节风格人群；不适合校园严格管制学生",
+      "features": [
+        "辨识度极高",
+        "充满街头嘻哈氛围",
+        "头皮分区辫可以收紧脸型",
+        "色彩丰富视觉冲击力强",
+        "可以选择拆卸式假发脏辫",
+        "无需损伤自身头发"
+      ],
+      "difficulty": "中高",
+      "difficultyLevel": "hard",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h25.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h26",
+      "name": "层次锁骨波波头（线条挑染款）",
+      "description": "长度抵达锁骨位置，中等层次剪裁，发尾柔和碎剪；搭配法式斜刘海，发丝自然内扣带有轻盈动感；底色冷茶棕，融入浅灰线条挑染提升通透感。",
+      "source": "波波网美发实拍案例",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸"
+      ],
+      "suitablePeople": "职场女性、学生，偏爱简约气质风，想要显利落又不失温柔的人群",
+      "features": [
+        "层次柔和不厚重",
+        "修饰下颌线条",
+        "挑染低调不张扬",
+        "拉高发型立体感",
+        "日常无需复杂造型",
+        "吹干即可呈现自然线条"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h26.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h27",
+      "name": "法式氛围感大波浪长发",
+      "description": "及腰长发，中分造型，搭配松散自然的大波浪卷发；发根蓬松处理，发卷柔和有光泽，自然黑发色，整体慵懒温柔，修饰脸型效果强。",
+      "source": "美发平台案例（波波网 阿松发型设计）",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸",
+        "心形脸"
+      ],
+      "suitablePeople": "喜欢温柔氛围感、轻熟风，发量偏少、想要打造头包脸效果的人群",
+      "features": [
+        "大波浪卷度柔和不夸张",
+        "自然修饰下颌线与颧骨",
+        "中分颅顶蓬松处理",
+        "优化头身比例",
+        "黑长直基础上增加卷度",
+        "兼顾气质与氛围感",
+        "适配多种穿搭风格"
+      ],
+      "difficulty": "中高",
+      "difficultyLevel": "hard",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h27.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h28",
+      "name": "红棕色齐刘海层次长发\t\t\t\t\t\t\t\t\t",
+      "description": "\t长款直发，长度过胸，整体柔和层次剪裁；厚重空气齐刘海，发色暖红棕，发丝顺滑垂坠。",
+      "source": "美发平台热榜作品",
+      "suitableFaceShapes": [
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "喜欢甜美日系风格，长发爱好者",
+      "features": [
+        "齐刘海弱化额头",
+        "长发修饰脸颊",
+        "红色发色氛围感强",
+        "直发打理简单"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "long"
+      ],
+      "imageUrl": "/public/images/hair/h28.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h29",
+      "name": "日系纹理烫短发（狼尾碎波波卷）",
+      "description": "长度在下巴位置，整体外轮廓为波波造型；发尾外翘碎剪，搭配松散S型纹理烫；轻薄空气碎刘海，黑茶棕自然发色，整体凌乱随性。",
+      "source": "美发平台案例",
+      "suitableFaceShapes": [
+        "圆脸",
+        "菱形脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "喜欢日系文艺、中性休闲风格，发量偏少、想要增加蓬松度的人群",
+      "features": [
+        "纹理烫提升发量",
+        "碎发弱化脸部硬朗线条",
+        "刘海轻薄透气不闷额头",
+        "可盐可甜",
+        "风格辨识度高"
+      ],
+      "difficulty": "中",
+      "difficultyLevel": "medium",
+      "categories": [
+        "short"
+      ],
+      "imageUrl": "/public/images/hair/h29.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
+    },
+    {
+      "id": "h30",
+      "name": "男士短款前刺纹理烫（摩根烫渐变款",
+      "description": "顶部短发做蓬松纹理烫，打造前刺造型，发丝根根分明有立体感；两侧及后颈做渐变推剪，过渡自然，自然黑发色，整体干净利落，兼具少年感与酷感。",
+      "source": "美发平台案例（波波网）",
+      "suitableFaceShapes": [
+        "圆脸",
+        "方脸",
+        "鹅蛋脸",
+        "长脸"
+      ],
+      "suitablePeople": "喜欢简约干练、日常好打理风格，想要提升颅顶高度、增加发型立体感的男士",
+      "features": [
+        "顶部纹理烫提升发量与蓬松度",
+        "修饰头型",
+        "两侧渐变推剪拉长颈部线条",
+        "显脸小",
+        "造型感强",
+        "日常无需复杂打理",
+        "吹干即可成型",
+        "适配校园",
+        "职场",
+        "日常等多种场景"
+      ],
+      "difficulty": "低",
+      "difficultyLevel": "easy",
+      "categories": [
+        "medium"
+      ],
+      "imageUrl": "/public/images/hair/h30.jpeg",
+      "modelUrl": null,
+      "modelWidth": 1.08,
+      "modelOffset": {
+        "x": 0,
+        "y": 0.06,
+        "z": 0
+      },
+      "modelRotY": 0,
+      "fit": "all",
+      "params": {
+        "sideLen": 0.5,
+        "frontLen": 0.6,
+        "volume": 0.5,
+        "curl": 0.3
+      }
     }
   ]
 }

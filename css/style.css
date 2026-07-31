@@ -310,3 +310,46 @@ input[type=range]::-moz-range-thumb { width: 13px; height: 13px; border-radius: 
   border-top: 1px solid var(--line-soft);
   font-size: 12px; color: var(--text-3);
 }
+
+/* 发型卡片：图片 / 特点 / 难度标签 */
+.style-card .thumb img.photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.style-card .feats { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.style-card .feats .tag {
+  display: inline-block; font-size: 10.5px; color: var(--text-2);
+  background: #f4f5fa; padding: 2px 7px; border-radius: 7px; margin: 0; line-height: 1.5;
+}
+.style-card .diff-row { margin-top: 6px; }
+.style-card .diff { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.style-card .diff-easy { background: #e6f7ef; color: #0f7b4f; }
+.style-card .diff-medium { background: #fff3e0; color: #b4690e; }
+.style-card .diff-hard { background: #ffe9ef; color: #d11d48; }
+.style-card .diff-unknown { background: #eef0f7; color: var(--text-2); }
+.style-card .no3d {
+  position: absolute; top: 7px; left: 7px; z-index: 2;
+  font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 7px;
+  background: rgba(255,255,255,.92); color: var(--text-2); border: 1px solid var(--line);
+}
+
+/* 发型参考大图弹窗 */
+.modal {
+  position: fixed; inset: 0; z-index: 60;
+  display: grid; place-items: center; padding: 24px;
+  background: rgba(15, 18, 34, .55); backdrop-filter: blur(4px);
+}
+.modal-card {
+  position: relative; width: min(420px, 100%);
+  background: #fff; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md);
+}
+.modal-close {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,.85); color: var(--text); font-size: 20px; line-height: 1;
+  cursor: pointer; box-shadow: var(--shadow-sm);
+}
+.modal-img { width: 100%; max-height: 52vh; object-fit: contain; background: #f6f7fb; display: block; }
+.modal-meta { padding: 16px 18px 20px; }
+.modal-meta h3 { margin: 0 0 8px; font-size: 17px; }
+.modal-meta p { margin: 0 0 12px; font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.modal-tags .tag { font-size: 11.5px; padding: 4px 10px; border-radius: 8px; background: #f4f5fa; color: var(--text-2); }
+.modal-tags .diff { font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }

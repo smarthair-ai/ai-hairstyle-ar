@@ -45,32 +45,57 @@ export function getById(id) {
 /** 兼容旧调用名 */
 export function getStyle(id) { return getById(id); }
 
-/** 从数据库推断分类（去重、保持出现顺序） */
+/** 从数据库推断分类（去重、保持出现顺序），兼容 categories 数组与旧单值 category */
 export function getCategories() {
   const seen = new Set();
   const out = [];
   for (const s of getStyles()) {
-    if (s.category && !seen.has(s.category)) { seen.add(s.category); out.push(s.category); }
+    const cats = s.categories || (s.category ? [s.category] : []);
+    for (const c of cats) {
+      if (!seen.has(c)) { seen.add(c); out.push(c); }
+    }
   }
   return out;
 }
 
 /**
- * 依据脸型给全部发型排序（与 hairstyles.js 旧的 recommend 逻辑一致）。
+ * 依据脸型给全部发型排序 / 筛选。
+ * - 发型带 suitableFaceShapes（中文脸型数组）：识别到的脸型命中即匹配，
+ *   且脸型列表越专一（越短）匹配度越高。
+ * - 旧发型仅有 fit 对象：沿用 0~1 适配度 → 55~98 分。
+ * - 未识别脸型：全部给中等分，便于一览。
  * @param {string} shapeKey oval|round|square|oblong|heart|diamond|pear
  * @param {string} filter   all|short|medium|long
  */
+const SHAPE_CN = {
+  oval: '鹅蛋脸', round: '圆脸', square: '方脸',
+  oblong: '长脸', heart: '心形脸', diamond: '菱形脸', pear: '梨形脸',
+};
+
 export function recommend(shapeKey, filter = 'all') {
+  const cn = shapeKey ? (SHAPE_CN[shapeKey] || shapeKey) : null;
   const list = getStyles()
-    .filter(s => filter === 'all' || s.category === filter)
+    .filter(s => {
+      if (filter !== 'all') {
+        const cats = s.categories || (s.category ? [s.category] : []);
+        if (!cats.includes(filter)) return false;
+      }
+      return true;
+    })
     .map(s => {
-      const fit = (s.fit && s.fit[shapeKey] != null) ? s.fit[shapeKey] : 0.6;
-      return {
-        ...s,
-        fit,
-        score: Math.round(55 + fit * 43),   // 0~1 适配度 → 55~98 分
-      };
+      const shapes = s.suitableFaceShapes;
+      let match;
+      if (cn && shapes && shapes.length) {
+        match = shapes.includes(cn) ? 100 - (shapes.length - 1) * 6 : 0;
+      } else if (cn && s.fit && typeof s.fit === 'object' && s.fit[shapeKey] != null) {
+        match = 55 + s.fit[shapeKey] * 43;            // 旧条目 fit 兜底
+      } else if (cn) {
+        match = 0;
+      } else {
+        match = 60;                                    // 未识别脸型：中等展示
+      }
+      return { ...s, match, score: Math.round(match) };
     });
-  list.sort((a, b) => b.score - a.score);
+  list.sort((a, b) => (cn ? b.match - a.match : b.score - a.score));
   return list;
 }

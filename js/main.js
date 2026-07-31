@@ -80,6 +80,12 @@ function initUI() {
   // 按钮
   UI.el('startBtn').addEventListener('click', start);
   UI.el('retryBtn').addEventListener('click', () => start());   // 重试：直接重新申请摄像头
+
+  // 图片参考大图弹窗的关闭交互
+  UI.el('hairImgClose').addEventListener('click', UI.hideHairImage);
+  UI.el('hairImgModal').addEventListener('click', (e) => {
+    if (e.target === UI.el('hairImgModal')) UI.hideHairImage();
+  });
   UI.el('camSelect').addEventListener('change', async (e) => {
     state.cameraDeviceId = e.target.value;
     stop();           // 先停当前流
@@ -154,7 +160,14 @@ async function pickStyle(id, byUser = true) {
   state.styleId = id;
   refreshStyleList();
   const style = getStyle(id);
-  if (state.ar) await state.ar.setStyle(style, state.colorHex);
+  if (style.modelUrl) {
+    // 有 3D 模型 → 进入 AR 实时试戴
+    if (state.ar) await state.ar.setStyle(style, state.colorHex);
+  } else if (style.imageUrl && byUser) {
+    // 只有参考图、无 3D 模型 → 弹大图（仅用户主动点击才弹，自动切换不打扰）
+    UI.showHairImage(style);
+  }
+  // 既无 3D 模型也无图片：不操作
 }
 
 /* ------------------------------------------------------------------ */

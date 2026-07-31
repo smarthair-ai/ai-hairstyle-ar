@@ -199,6 +199,19 @@
   </aside>
 </main>
 
+<!-- 发型参考大图弹窗（仅含参考图、无 3D 模型的发型点击后弹出） -->
+<div class="modal hidden" id="hairImgModal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <button class="modal-close" id="hairImgClose" aria-label="关闭">&times;</button>
+    <img class="modal-img" id="hairImgEl" src="" alt="">
+    <div class="modal-meta">
+      <h3 id="hairImgName"></h3>
+      <p id="hairImgDesc"></p>
+      <div class="modal-tags" id="hairImgTags"></div>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <span>MediaPipe FaceLandmarker · Three.js · 纯前端实现</span>
   <span>提示：把 .glb 发型模型放进 <code>public/models/hair/</code> 并在 <code>hairDatabase.json</code> 中登记一项（填 <code>modelUrl</code>）即可加载真实 3D 发型。</span>

@@ -118,21 +118,58 @@ export function renderShapeCard(result, metrics) {
     .map(r => `<span class="alt-item">${r.name} ${(r.score * 100).toFixed(0)}%</span>`).join('');
 }
 
-/** 发型列表 */
+function escapeHtml(t) {
+  return String(t ?? '').replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+/** 发型列表（图片优先，含特点 + 打理难度标签；无 3D 模型标「参考图」角标） */
 export function renderStyleGrid(list, activeId, onPick) {
   const grid = el('styleGrid');
-  grid.innerHTML = list.map((s, i) => `
-    <button class="style-card ${s.id === activeId ? 'active' : ''}" data-id="${s.id}" type="button">
-      <span class="score ${i < 3 ? 'hot' : ''}">${s.score}</span>
-      <div class="thumb">${styleThumb(s)}</div>
-      <span class="name">${s.name}</span>
-      <span class="tag">${s.tag}</span>
-    </button>`).join('');
+  grid.innerHTML = list.map((s, i) => {
+    const thumb = s.imageUrl
+      ? `<img class="photo" src="${s.imageUrl}" alt="${escapeHtml(s.name)}" loading="lazy">`
+      : styleThumb(s);
+    const feats = (s.features || []).slice(0, 2)
+      .map(f => `<span class="tag">${escapeHtml(f)}</span>`).join('');
+    const diff = s.difficulty
+      ? `<span class="diff diff-${s.difficultyLevel || 'unknown'}">${escapeHtml(s.difficulty)}</span>`
+      : '';
+    const no3d = s.modelUrl ? '' : '<span class="no3d">参考图</span>';
+    const score = (s.score != null) ? s.score : '';
+    return `<button class="style-card ${s.id === activeId ? 'active' : ''}" data-id="${s.id}" type="button">
+      <span class="score ${i < 3 ? 'hot' : ''}">${score}</span>
+      ${no3d}
+      <div class="thumb">${thumb}</div>
+      <span class="name">${escapeHtml(s.name)}</span>
+      <div class="feats">${feats}</div>
+      <div class="diff-row">${diff}</div>
+    </button>`;
+  }).join('');
 
   grid.querySelectorAll('.style-card').forEach(btn => {
     btn.addEventListener('click', () => onPick(btn.dataset.id));
   });
 }
+
+/** 图片参考大图弹窗（用于仅有参考图、无 3D 模型的发型） */
+export function showHairImage(style) {
+  el('hairImgEl').src = style.imageUrl || '';
+  el('hairImgEl').alt = style.name || '';
+  el('hairImgName').textContent = style.name || '';
+  el('hairImgDesc').textContent = style.description || '';
+  const tags = [
+    ...((style.features || []).map(f => `<span class="tag">${escapeHtml(f)}</span>`)),
+    ...((style.suitableFaceShapes || []).map(f => `<span class="tag">适合${escapeHtml(f)}</span>`)),
+    (style.difficulty
+      ? `<span class="diff diff-${style.difficultyLevel || 'unknown'}">打理难度：${escapeHtml(style.difficulty)}</span>`
+      : ''),
+  ];
+  el('hairImgTags').innerHTML = tags.join('');
+  el('hairImgModal').classList.remove('hidden');
+}
+export function hideHairImage() { el('hairImgModal').classList.add('hidden'); }
 
 /** 发色色板 */
 export function renderSwatches(activeHex, onPick) {
