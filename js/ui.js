@@ -254,14 +254,30 @@ let _faceMode = null;
 export function setFaceMode(yawDeg) {
   const chip = el('faceMode');
   if (!chip) return;
+  // 传 null / undefined 表示没有人脸：隐藏角标
+  if (yawDeg == null) {
+    chip.classList.add('hidden');
+    _faceMode = null;
+    return;
+  }
+  chip.classList.remove('hidden');
   const a = Math.abs(yawDeg || 0);
-  let label, cls;
-  if (a <= 15) { label = '正脸'; cls = 'ok'; }
-  else if (a <= 30) { label = '微侧脸'; cls = 'warn'; }
-  else { label = '侧脸'; cls = 'bad'; }
+  // 2D 贴图始终正对镜头，头一转就会露馅，所以按偏航角分三档给出明确提示
+  let label, text, tip, cls;
+  if (a <= 15) {
+    label = '正脸'; text = '正脸 · 效果最佳';
+    tip = '当前是正脸，2D 发型贴合度最高'; cls = 'ok';
+  } else if (a <= 30) {
+    label = '微侧脸'; text = '微侧脸 · 略有偏差';
+    tip = '轻微侧转：2D 贴图仍面向镜头，边缘会略有偏差'; cls = 'warn';
+  } else {
+    label = '侧脸'; text = '侧脸 · 建议转回正面';
+    tip = '侧脸角度较大：2D 贴图无法呈现头发的侧面厚度，效果偏差明显，建议转回正面查看'; cls = 'bad';
+  }
   if (label === _faceMode) return;
   _faceMode = label;
-  chip.textContent = label;
+  chip.textContent = text;
+  chip.title = tip;
   chip.className = 'face-chip ' + cls;
 }
 

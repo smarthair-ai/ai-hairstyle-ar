@@ -377,6 +377,7 @@ function loop(now) {
     } else {
       state.ar.onFaceLost();
       UI.setHud('没有检测到人脸，请正对摄像头');
+      UI.setFaceMode(null);          // 丢失人脸：隐藏正/侧脸角标
       if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
     }
   }
