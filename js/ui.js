@@ -10,16 +10,11 @@ export const el = (id) => document.getElementById(id);
 /* ------------------------------------------------------------------ */
 /* 发型缩略图：用 SVG 现画一个侧影，零资源依赖                          */
 /* ------------------------------------------------------------------ */
-export function styleThumb(style) {
-  // 真实 3D 模型可能没有 params（仅有 modelUrl），这里按分类给一个通用轮廓
-  const p = style.params || categoryFallback(style.category);
-  // 兼容数值颜色与字符串颜色（"#241d1f" / "241d1f"）
-  const raw = style.color ?? '#241d1f';
-  const hair = (typeof raw === 'number')
-    ? '#' + raw.toString(16).padStart(6, '0')
-    : (String(raw).startsWith('#') ? raw : '#' + raw);
-  const hairLight = shade(hair, 1.25);
-
+/**
+ * 计算发型形状路径（侧影用）。抽出为公共函数，供 styleThumb（带脸的缩略图）
+ * 与 hairOverlaySVG（透明、仅头发、用作 2D 试戴精灵贴图）共用，避免两套重复几何。
+ */
+function computeHair(p, hair) {
   const sideLen = p.sideLen ?? 0.4;
   const frontLen = p.frontLen ?? 0;
   const vol = p.volume ?? 1.1;
@@ -34,7 +29,7 @@ export function styleThumb(style) {
 
   let extra = '';
   if (p.extra === 'ponytail') extra += `<ellipse cx="50" cy="86" rx="9" ry="15" fill="${hair}"/><circle cx="50" cy="26" r="7" fill="${hair}"/>`;
-  if (p.extra === 'bun') extra += `<circle cx="50" cy="12" r="11" fill="${hair}"/><ellipse cx="50" cy="21" rx="8" ry="3" fill="${hairLight}"/>`;
+  if (p.extra === 'bun') extra += `<circle cx="50" cy="12" r="11" fill="${hair}"/><ellipse cx="50" cy="21" rx="8" ry="3" fill="${hairLightFallback(hair)}"/>`;
   if (p.extra === 'twintail') extra += `<circle cx="22" cy="20" r="7" fill="${hair}"/><circle cx="78" cy="20" r="7" fill="${hair}"/>`;
   if (p.extra === 'braids') extra += `<circle cx="24" cy="30" r="6" fill="${hair}"/><circle cx="76" cy="30" r="6" fill="${hair}"/>`;
   if (p.extra === 'topknot') extra += `<circle cx="50" cy="6" r="10" fill="${hair}"/>`;
@@ -45,17 +40,60 @@ export function styleThumb(style) {
       extra += `<circle cx="${(50 + Math.cos(a) * (halfW - 2)).toFixed(1)}" cy="${(44 + Math.sin(a) * 24).toFixed(1)}" r="6" fill="${hair}" opacity=".9"/>`;
     }
   }
+  return { back, cap, extra, hairline, halfW, bottom };
+}
+
+function hairColor(style) {
+  const raw = style.color ?? '#241d1f';
+  return (typeof raw === 'number')
+    ? '#' + raw.toString(16).padStart(6, '0')
+    : (String(raw).startsWith('#') ? raw : '#' + raw);
+}
+
+function hairLightFallback(hair) { return shade(hair, 1.25); }
+
+export function styleThumb(style) {
+  // 真实 3D 模型可能没有 params（仅有 modelUrl），这里按分类给一个通用轮廓
+  const p = style.params || categoryFallback(style.category);
+  const hair = hairColor(style);
+  const hairLight = shade(hair, 1.25);
+  const h = computeHair(p, hair);
 
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect width="100" height="100" fill="#f7f8fc"/>
-    <path d="${back}" fill="${hair}"/>
-    ${extra}
+    <path d="${h.back}" fill="${hair}"/>
+    ${h.extra}
     <rect x="44" y="60" width="12" height="18" rx="4" fill="#eec6ab"/>
     <ellipse cx="50" cy="47" rx="18.5" ry="24" fill="#f7dac3"/>
     <ellipse cx="43" cy="46" rx="1.7" ry="2.1" fill="#8a6b58"/>
     <ellipse cx="57" cy="46" rx="1.7" ry="2.1" fill="#8a6b58"/>
     <path d="M45.5,55 Q50,58 54.5,55" stroke="#d9a488" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-    <path d="${cap}" fill="${hair}"/>
+    <path d="${h.cap}" fill="${hair}"/>
+    <path d="M34,26 Q50,17 66,26" stroke="${hairLight}" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/**
+ * 透明、仅头发的 SVG（用作 2D 试戴的精灵贴图）。
+ * 用 mask 把脸部区域"挖空"，所以叠到真人脸上时不会盖住五官，只显示头发轮廓。
+ * 没有参考图的发型（内置/程序化款）靠它也能 2D 试戴。
+ * 返回带 width/height 的 SVG，便于在 Canvas 上按固定尺寸光栅化。
+ */
+export function hairOverlaySVG(style) {
+  const p = style.params || categoryFallback(style.category);
+  const hair = hairColor(style);
+  const hairLight = shade(hair, 1.25);
+  const h = computeHair(p, hair);
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+    <defs>
+      <mask id="fh">
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
+        <ellipse cx="50" cy="47" rx="19" ry="25" fill="black"/>
+      </mask>
+    </defs>
+    <path d="${h.back}" fill="${hair}" mask="url(#fh)"/>
+    ${h.extra}
+    <path d="${h.cap}" fill="${hair}"/>
     <path d="M34,26 Q50,17 66,26" stroke="${hairLight}" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"/>
   </svg>`;
 }
@@ -210,6 +248,22 @@ export function setHud(text, ok = false) {
   pill.classList.toggle('ok', ok);
 }
 export function hideHud() { el('hud').classList.add('hidden'); }
+
+/** 正面/侧脸 角标：根据偏航角（度）更新，提示用户在侧脸时 2D 贴图会有偏差 */
+let _faceMode = null;
+export function setFaceMode(yawDeg) {
+  const chip = el('faceMode');
+  if (!chip) return;
+  const a = Math.abs(yawDeg || 0);
+  let label, cls;
+  if (a <= 15) { label = '正脸'; cls = 'ok'; }
+  else if (a <= 30) { label = '微侧脸'; cls = 'warn'; }
+  else { label = '侧脸'; cls = 'bad'; }
+  if (label === _faceMode) return;
+  _faceMode = label;
+  chip.textContent = label;
+  chip.className = 'face-chip ' + cls;
+}
 
 /** 遮罩层控制 */
 export function showCover(which, text) {

@@ -160,18 +160,9 @@ async function pickStyle(id, byUser = true) {
   state.styleId = id;
   refreshStyleList();
   const style = getStyle(id);
-  if (style.modelUrl) {
-    // 有 3D 模型 → 进入 AR 实时试戴
-    if (state.ar) await state.ar.setStyle(style, state.colorHex);
-  } else if (style.params || style.simple) {
-    // 程序化 3D 发型（内置 14 款 / Excel 参数化款 / 演示发型）→ AR 试戴
-    // 不需要任何外部模型文件，纯代码生成，零资源即可试戴
-    if (state.ar) await state.ar.setStyle(style, state.colorHex);
-  } else if (style.imageUrl && byUser) {
-    // 只有参考图、既无模型也无参数 → 弹大图（仅用户主动点击才弹，自动切换不打扰）
-    UI.showHairImage(style);
-  }
-  // 既无 3D 模型也无参数也无图片：不操作
+  // 统一交由 ARScene 呈现：sprite 模式加载图片精灵；3d 模式加载模型。
+  // 推荐逻辑（recommend + 脸型筛选）完全不变，这里只负责"把选中发型画出来"。
+  if (state.ar) await state.ar.setStyle(style, state.colorHex);
 }
 
 /* ------------------------------------------------------------------ */
@@ -381,6 +372,8 @@ function loop(now) {
       handleAnalysis(res.landmarks);
       if (state.showMesh) drawLandmarks(res.landmarks);
       else if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
+      // 正面/侧脸 提示：根据偏航角更新角标（侧脸时 2D 贴图会有偏差）
+      if (state.lastPose) UI.setFaceMode(state.lastPose.yawDeg);
     } else {
       state.ar.onFaceLost();
       UI.setHud('没有检测到人脸，请正对摄像头');

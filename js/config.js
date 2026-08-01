@@ -46,6 +46,25 @@ export const CONFIG = {
     fovY: 50,             // 虚拟相机垂直视场角（度）。位姿求解与它自洽，可自由调整
     maxPixelRatio: 1.75,  // 限制 DPR，避免 4K 屏上过度绘制
     ecoPixelRatio: 1.0,   // 省电模式下的 DPR
+    mode: 'sprite',       // 发型呈现方式：'sprite'(2D 图片精灵，默认) | '3d'(真实/程序化 3D 模型)
+  },
+
+  /* ---------- 2D 精灵（Sprite）参数 ----------
+   * 单位均为"头宽"：1 = 一个头骨宽度。精灵挂在 spriteGroup 下，
+   * spriteGroup 的缩放 = 实际头宽，所以下面的 scale 直接以头宽为基准。
+   * 照片类（真人参考图）通常更"满"，需要更大 scale + 更偏下的锚点；
+   * SVG 兜底（仅头发、透明）按头形轮廓，更接近真实头宽。 */
+  sprite: {
+    pivotX: 0.5,                 // 贴图锚点水平位置（0=左,1=右）
+    // —— 真人照片（imageUrl）——
+    photoScale: 2.6,             // 整体缩放：让照片里的头 ≈ 用户头宽
+    photoYOffset: 0.55,          // 相对头骨中心上移（让发顶压在头顶）
+    photoPivotY: 0.34,           // 锚点竖向（0=图底,1=图顶）：取中下偏上，照片顶部(头发)落在头顶上方
+    // —— SVG 兜底（无照片）——
+    silhouetteScale: 1.5,        // 透明头发轮廓的缩放
+    silhouetteYOffset: 0.12,
+    silhouettePivotY: 0.5,       // 头形轮廓已基本居中，锚点取中
+    opacity: 1.0,                // 整体不透明度（0~1）
   },
 
   /* ---------- 时序平滑（越小越稳、越大越跟手） ---------- */

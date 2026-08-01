@@ -1,6 +1,6 @@
 # AI 智能发型推荐 · AR 实时试戴
 
-浏览器端的智能发型推荐 Demo：打开摄像头 → 实时检测面部 468 个关键点 → 自动判断脸型 → 推荐合适的发型 → 把 3D 发型"戴"到头上，随头部转动而自然跟随。
+浏览器端的智能发型推荐 Demo：打开摄像头 → 实时检测面部 468 个关键点 → 自动判断脸型 → 推荐合适的发型 → 把 **2D 发型图片（Sprite 精灵）**"戴"到头上，始终面向相机、随头部移动而自然跟随（类抖音特效）。
 
 **全程本地运行，面部数据不上传任何服务器。**
 
@@ -14,8 +14,8 @@
 | 人脸检测 / 468 关键点 | MediaPipe Tasks Vision — `FaceLandmarker`（WASM + GPU 推理） |
 | 头部姿态 | 关键点多点最小二乘正交基 + MediaPipe 头部变换矩阵取深度 |
 | 脸型分析 | 面部几何比例 + 7 类脸型高斯模糊评分 |
-| 3D 渲染 | Three.js（ES Module，importmap 引入） |
-| 3D 发型 | 运行时程序化生成的参数曲面（也支持加载 `.glb` / `.gltf`） |
+| 2D 渲染 | Three.js（ES Module，importmap 引入）+ `THREE.Sprite` 精灵 |
+| 2D 发型 | 发型图片精灵（真人参考图优先，无图时用透明头发 SVG 兜底）；也支持加载 `.glb` / `.gltf` 真实 3D 模型 |
 
 ---
 
@@ -108,9 +108,77 @@ ai-hairstyle-ar/
 - 临时：用界面右下「发色与微调」的**上下/前后/大小**滑块做整体对齐；真实 3D 模型再用「发型位置微调」的 **X / Y / Z** 滑块精确到头；
 - 永久：改 `js/config.js` 的 `headAnchor.up / back / widthGain`，或在 `hairDatabase.json` 里给对应条目写 `modelOffset` / `modelRotY`。
 
+### 4.3 2D 图片精灵（当前默认）怎么"戴"稳的
+
+1. **精灵（Sprite）**：用一个 `THREE.Sprite` 加载发型图片，Three.js 的精灵天然**始终面向相机**（billboard），所以无论头怎么转，图片都正对你——和抖音特效一样；
+2. **跟随位置**：精灵挂在一个 `spriteGroup` 上，每帧把它的位置/缩放复制自头部锚点（头骨中心 + 实际头宽），于是贴图跟着头左右/远近移动、并随脸大小缩放；
+3. **不跟随旋转**：精灵**故意不继承**头部的偏航/俯仰旋转——这正是 2D 贴图与 3D 模型最大的区别，也是为什么侧脸时会有偏差（见第 9 节限制与界面左上「正脸 / 侧脸」角标提示）；
+4. **图片来源**：优先用 `hairDatabase.json` 里的 `imageUrl`（你的 Excel 发型照片，已转 WebP）；没有照片的发型（内置/程序化款）会用 `ui.js` 的 `hairOverlaySVG()` 动态生成**透明、仅头发**的贴图兜底，盖在真脸上也不会挡五官；
+5. **对齐**：「发色与微调」的**上下/前后/大小** + 「发型位置微调」的 **X / Y / Z** 四个滑块，全部作用于精灵，用来把贴图精确对到头上。
+
 ---
 
-## 5. 真实 3D 发型模型
+## 5. 2D 图片发型（当前默认试戴方式）
+
+当前默认用 **2D 图片精灵** 试戴：`render.mode: 'sprite'`。不需要任何 3D 模型资源，只要发型图片即可。
+
+### 5.1 图片怎么放、怎么登记
+
+1. 把发型图片放进 **`public/images/hair/`**（建议 **透明背景 PNG** 或已压缩的 **WebP**，png/jpg 也可）；
+2. 在 **`hairDatabase.json`** 的 `models` 数组里，给对应条目写 `imageUrl`，**用相对路径**（相对于站点根目录）：
+
+```json
+{
+  "id": "h01",
+  "name": "韩式高层次长发",
+  "categories": ["long"],
+  "imageUrl": "public/images/hair/h01.webp",
+  "suitableFaceShapes": ["圆脸", "方脸", "鹅蛋脸"],
+  "features": ["拉高颅顶", "修饰颧骨"],
+  "difficulty": "中等", "difficultyLevel": "medium"
+}
+```
+
+> ⚠️ **路径必须是相对路径**（如 `public/images/hair/h01.webp`），不要写 `/public/...` 开头——GitHub Pages 把站点挂在 `/ai-hairstyle-ar/` 子路径下，绝对路径会 404。
+
+### 5.2 把 JPEG 批量转 WebP（提速）
+
+图片体积直接影响加载速度。仓库自带转换脚本（需 Python + Pillow）：
+
+```bash
+python tools/convert_hair_webp.py            # 默认 quality=82
+python tools/convert_hair_webp.py --quality 85
+```
+
+它会把 `public/images/hair/*.jpeg` 转成同名的 `.webp`（通常只有原来的 1/3~1/2 体积），并把 `hairDatabase.json` 里的 `imageUrl` 一并改成相对路径 `.webp`。原 `.jpeg` 保留作备份。
+
+### 5.3 想要"抖音级"效果：用透明 PNG
+
+精灵直接把整张图叠在视频上。如果你的照片是**带背景的模特图**，叠上去会盖住自己的脸/身子。要做到只显示头发、露出真脸，请用**透明背景的头发抠图**（PNG）：
+
+- 用 [Photopea](https://www.photopea.com) / remove.bg 等把头发抠出来存成透明 PNG；
+- 命名 `hNN.png` 放进 `public/images/hair/`，把 `imageUrl` 改成 `public/images/hair/hNN.png` 即可。
+- 没有照片的发型会自动用 `ui.js` 的 `hairOverlaySVG()` 生成透明、仅头发的贴图兜底（已把脸部挖空），同样不挡五官。
+
+### 5.4 精调每张贴图（可选）
+
+`hairDatabase.json` 里某项可加 `sprite` 字段微调默认对齐（单位：头宽）：
+
+```json
+"sprite": { "scale": 2.6, "yOffset": 0.55, "pivotX": 0.5, "pivotY": 0.34, "opacity": 1.0 }
+```
+
+- `photoScale / photoYOffset / photoPivotY`：真人照片的默认值（见 `config.js` 的 `sprite`）；
+- `silhouetteScale / silhouetteYOffset / silhouettePivotY`：SVG 兜底的默认值。
+- 运行时也能用界面右侧「发色与微调」的**上下/前后/大小** + 「发型位置微调」的 **X / Y / Z** 滑块实时校正。
+
+### 5.5 正面 / 侧脸 提示
+
+精灵不随头部旋转，所以**正脸时最准**；侧转时贴图只平移、不旋转，效果会稍有偏差。界面左上角有「正脸 / 微侧脸 / 侧脸」角标实时提示，HUD 也会在没正对镜头时给出引导。
+
+---
+
+## 6. 真实 3D 发型模型（可选）
 
 内置发型是运行时用参数曲面生成的（零资源依赖）。要换成写实的真实模型，照下面两步即可。
 
@@ -229,6 +297,8 @@ node tools/add_hair_model.mjs --url "https://.../hair.glb" --id longwave3d --nam
 
 - 脸型判断基于 2D 投影的几何比例，是**风格建议**而非精确测量；发际线位置（关键点 `10`）因人而异，会影响"脸长"指标；
 - 程序化发型是风格化造型，不追求写实发丝；需要写实效果请挂载真实 `.glb` 模型；
+- **2D 图片精灵不随头部旋转**：正脸时贴合最好，侧转/低头时贴图只平移、不旋转，会有可见偏差（界面左上角「正脸 / 侧脸」角标会提示）；想要随头转动的立体效果请改用 3D 模型（`config.js` 的 `render.mode` 切到 `'3d'`）；
+- 带背景的照片直接叠放会盖住自己的脸，建议用透明背景 PNG（见第 5.3 节）；
 - 目前只追踪一张人脸（`numFaces: 1`），多人场景下会选择置信度最高的那张。
 
 ---
@@ -266,7 +336,7 @@ git push -u origin main
 站点已部署在 GitHub Pages（分支部署）。往项目里加发型模型后，**push 到 `main` 分支即会自动重新发布**（约 1 分钟，浏览器记得强制刷新 `Ctrl/Cmd+Shift+R` 清缓存）。
 
 ### 步骤 1：获取模型
-从 README 第 5 节的网站（Meshy / Sketchfab / Poly Pizza / Quaternius 等）下载 `.glb` 或 `.gltf`，注意选 **Free / CC0 / CC-BY** 等可商用授权。单个文件建议 **< 100 MB**（GitHub 免费账户硬上限，超大文件请用 Git LFS 或外部 CDN）。
+从 README 第 6 节的网站（Meshy / Sketchfab / Poly Pizza / Quaternius 等）下载 `.glb` 或 `.gltf`，注意选 **Free / CC0 / CC-BY** 等可商用授权。单个文件建议 **< 100 MB**（GitHub 免费账户硬上限，超大文件请用 Git LFS 或外部 CDN）。
 
 ### 步骤 2：接入模型（二选一）
 
@@ -299,6 +369,6 @@ git push origin main      # 触发 GitHub Pages 自动重建
 `hairDatabase.json` 里的发型分为两类，都能直接在 AR 里试戴，**都不需要任何外部 `.glb` 文件**：
 
 - **程序化 3D 发型**：靠 `params`（长度 / 卷度 / 蓬松 / 分缝 / extra 部件）在运行时用 Three.js 实时生成。内置 14 款 + 新增 6 款（`twintail` 双马尾、`braid` 麻花辫、`topknot` 高发髻、`spacebun` 双丸子头、`hime` 公主切、`collarbone` 锁骨发）均属此类，点击即试戴。
-- **收集表 30 款**：原本只有参考图，现已通过 `tools/infer_hair_params.py` 根据其名称 / 特点 / 分类推断 `params`，**全部转为可 AR 试戴的 3D 发型**（有图的同时也能试戴，卡片右上「图」角标可看参考大图）。
+- **收集表 30 款**：用你 Excel 里的发型照片（`public/images/hair/hNN.webp`）作为 **2D 图片精灵**直接试戴；同时保留 `tools/infer_hair_params.py` 推断的 `params` 作 3D 兜底，卡片右上「图」角标可看参考大图。
 
 想扩充零资源发型库：直接往 `hairDatabase.json` 的 `models` 数组加一项，填好 `params`（或 `extra`）即可，无需模型文件。已有 `tools/infer_hair_params.py` 可批量按名称特征回填 `params`。

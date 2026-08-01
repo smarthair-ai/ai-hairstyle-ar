@@ -168,6 +168,18 @@ code {
 }
 .hud-pill.ok { background: rgba(22, 163, 74, .78); }
 
+/* 正面/侧脸 角标（左上角），提示 2D 贴图在侧脸时的偏差 */
+.face-chip {
+  position: absolute; top: 14px; left: 14px; z-index: 5;
+  padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700;
+  color: #fff; backdrop-filter: blur(6px); pointer-events: none;
+  background: rgba(12, 14, 26, .58); border: 1px solid rgba(255, 255, 255, .18);
+  transition: background .2s ease;
+}
+.face-chip.ok { background: rgba(22, 163, 74, .82); }
+.face-chip.warn { background: rgba(234, 179, 8, .9); color: #1a1505; }
+.face-chip.bad { background: rgba(220, 38, 38, .85); }
+
 .hidden { display: none !important; }
 
 /* ---------------- 工具条 ---------------- */

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI 智能发型推荐 · AR 实时试戴</title>
-<meta name="description" content="基于 MediaPipe + Three.js 的浏览器端脸型分析与 3D 发型 AR 试戴，所有数据本地处理。" />
+<title>AI 智能发型推荐 · 2D 发型图片 AR 实时试戴</title>
+<meta name="description" content="基于 MediaPipe + Three.js 的浏览器端脸型分析与 2D 发型图片精灵 AR 试戴，所有数据本地处理。" />
 <link rel="stylesheet" href="./css/style.css" />
 
 <!--
@@ -55,10 +55,13 @@
   <section class="stage-col">
     <div class="stage" id="stage">
       <video id="video" playsinline muted autoplay></video>
-      <!-- Three.js 渲染 3D 发型 -->
+      <!-- Three.js 渲染 2D 发型精灵（始终面向相机） -->
       <canvas id="arCanvas"></canvas>
       <!-- 2D 叠加层：关键点 / 网格调试 -->
       <canvas id="overlayCanvas"></canvas>
+
+      <!-- 正面/侧脸 角标：侧转时提示 2D 贴图会有偏差 -->
+      <div class="face-chip ok" id="faceMode">正脸</div>
 
       <!-- 未开启摄像头时的引导层 -->
       <div class="stage-cover" id="stageCover">
@@ -123,7 +126,7 @@
       <label class="switch"><input type="checkbox" id="occChk" checked><span></span>头部遮挡</label>
       <label class="switch"><input type="checkbox" id="ecoChk"><span></span>省电模式</label>
       <label class="switch"><input type="checkbox" id="debugChk"><span></span>调试标记</label>
-      <label class="switch"><input type="checkbox" id="testChk"><span></span>测试模型</label>
+      <label class="switch"><input type="checkbox" id="testChk"><span></span>对齐参考框</label>
     </div>
 
     <p class="privacy-note">
@@ -186,9 +189,9 @@
     <!-- 发型位置微调（X/Y/Z） -->
     <div class="card">
       <div class="card-head"><h3>发型位置微调</h3>
-        <span class="chip">真实模型对齐</span>
+        <span class="chip">2D 贴图对齐</span>
       </div>
-      <p class="hint">单位：头宽。换上真实 3D 模型后，用它把发型精确"戴"到头上（左右 / 上下 / 前后）。</p>
+      <p class="hint">单位：头宽。正脸时贴图最准；侧转头部时 2D 贴图只平移、不旋转，效果会稍有偏差，可用滑块手动校正。</p>
       <div class="sliders">
         <label>左右 X <input type="range" id="offsetX" min="-0.4" max="0.4" step="0.005" value="0"><span data-for="offsetX">0.00</span></label>
         <label>上下 Y <input type="range" id="offsetY" min="-0.4" max="0.4" step="0.005" value="0"><span data-for="offsetY">0.00</span></label>
@@ -214,7 +217,7 @@
 
 <footer class="footer">
   <span>MediaPipe FaceLandmarker · Three.js · 纯前端实现</span>
-  <span>提示：把 .glb 发型模型放进 <code>public/models/hair/</code> 并在 <code>hairDatabase.json</code> 中登记一项（填 <code>modelUrl</code>）即可加载真实 3D 发型。</span>
+  <span>当前为 <b>2D 图片精灵</b>试戴：把发型图片放进 <code>public/images/hair/</code>（建议透明背景 PNG 或已压缩的 WebP），并在 <code>hairDatabase.json</code> 登记 <code>imageUrl</code> 即可。若想换回真实 3D 模型，填 <code>modelUrl</code> 并把 <code>config.js</code> 的 <code>render.mode</code> 改为 <code>'3d'</code>。</span>
 </footer>
 
 <script type="module" src="./js/main.js"></script>

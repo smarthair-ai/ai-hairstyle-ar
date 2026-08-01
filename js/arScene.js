@@ -25,8 +25,17 @@ import * as THREE from 'three';
 import { CONFIG } from './config.js';
 import { LM } from './faceShape.js';
 import { buildHairGroup, buildSimpleHair, applyHairColor, disposeGroup, HEAD } from './hairFactory.js';
+import { hairOverlaySVG } from './ui.js';
 
 const DEG = Math.PI / 180;
+
+/** 把发型里的 color（数字 0x241d1f / 字符串 "#241d1f" / "241d1f"）统一成数字 */
+function colorToHex(c) {
+  if (c == null) return 0x241d1f;
+  if (typeof c === 'number') return c;
+  const s = String(c);
+  return parseInt(s.startsWith('#') ? s.slice(1) : s, 16) || 0x241d1f;
+}
 
 export class ARScene {
   constructor(canvas) {
@@ -73,6 +82,29 @@ export class ARScene {
     this.debugGroup = this._buildDebug();
     this.debugGroup.visible = false;
     this.anchor.add(this.debugGroup);
+
+    /* ---------------- 2D 精灵模式（Sprite） ---------------- *
+     * 类抖音特效：精灵始终面向相机（billboard），只跟随头部"位置/缩放"，
+     * 不继承 anchor 的旋转 → 侧脸时仅平移、略有偏差（HUD 会提示）。
+     * spriteGroup 与 anchor 是兄弟节点：anchor 负责 3D（旋转+缩放），
+     * spriteGroup 只复制 anchor 的"位置 + 缩放"，丢弃旋转。 */
+    this.spriteGroup = new THREE.Group();
+    this.spriteGroup.visible = false;
+    this.scene.add(this.spriteGroup);
+
+    this.spriteTune = null;     // 用户微调容器（X/Y/Z + 大小）
+    this.sprite = null;         // THREE.Sprite
+    this.spriteTex = null;
+    this.spriteIsPhoto = false; // 是否真人照片（照片自带颜色，不染色）
+    this.spriteYOffset = 0;     // 该发型相对头骨中心的竖向偏移（头宽单位）
+    this._spriteBaseScale = CONFIG.sprite?.silhouetteScale ?? 1.5;
+
+    // 对齐参考框（测试/调试用）：青色圆角矩形 + 十字 + 发际线，帮助把贴图对到头上
+    this.alignHelper = this._buildAlignHelper();
+    this.alignHelper.visible = false;
+    this.spriteGroup.add(this.alignHelper);
+
+    this._spriteActive = false;
 
     this.hairGroup = null;
     this.currentStyle = null;
@@ -207,12 +239,25 @@ export class ARScene {
     this._applyVisibility();
   }
 
-  /** 统一切换 hairGroup / placeholder 的可见性（受 test 模式影响） */
+  /** 统一切换 精灵 / 3D 头发 / 占位 / 调试的可见性（受 test / debug 模式影响） */
   _applyVisibility() {
-    const showHair = !this.testOn;
-    if (this.hairGroup) this.hairGroup.visible = showHair;
-    this.placeholder.visible = this.testOn && this.anchor.visible;
-    this.debugGroup.visible = this.debugOn && this.anchor.visible;
+    if (this._spriteActive) {
+      const showHair = !this.testOn;
+      if (this.sprite) this.sprite.visible = showHair && this.spriteGroup.visible;
+      // 测试 / 调试时显示"对齐参考框"，帮助把贴图对到头上
+      this.alignHelper.visible = this.spriteGroup.visible && (this.testOn || this.debugOn);
+      // 3D 相关全部隐藏
+      this.placeholder.visible = false;
+      this.debugGroup.visible = false;
+      if (this.hairGroup) this.hairGroup.visible = false;
+    } else {
+      const showHair = !this.testOn;
+      if (this.hairGroup) this.hairGroup.visible = showHair;
+      this.placeholder.visible = this.testOn && this.anchor.visible;
+      this.debugGroup.visible = this.debugOn && this.anchor.visible;
+      this.spriteGroup.visible = false;
+      this.alignHelper.visible = false;
+    }
   }
 
   /** 手动微调发型整体偏移（单位：头宽）。可在控制台调用，也可直接改 this.offset */
@@ -244,8 +289,20 @@ export class ARScene {
 
   /* ---------------- 发型 ---------------- */
 
-  /** 切换发型。优先级：modelUrl(glTF) > simple(圆锥+圆柱) > 程序化参数曲面 */
+  /** 当前是否用 2D 精灵呈现：默认 sprite 模式；3d 模式下没有模型文件的款也回退到精灵 */
+  _useSprite(style) {
+    if (CONFIG.render.mode === 'sprite') return true;
+    return !style.modelUrl;
+  }
+
+  /**
+   * 切换发型。
+   *  - sprite 模式：用 THREE.Sprite 加载发型图片（真人照片优先，否则用透明头发 SVG 兜底）。
+   *  - 3d 模式：modelUrl(glTF) > simple(圆锥+圆柱) > 程序化参数曲面。
+   */
   async setStyle(style, colorHex) {
+    // 清掉旧内容
+    this._clearSprite();
     if (this.hairGroup) {
       this.tune.remove(this.hairGroup);
       disposeGroup(this.hairGroup);
@@ -253,25 +310,160 @@ export class ARScene {
     }
     this.currentStyle = style;
 
-    let group;
-    try {
-      if (style.modelUrl) {
-        group = await this._loadGLTF(style);
-      } else if (style.simple) {
-        group = buildSimpleHair(style);          // 圆锥+圆柱演示发型
-      } else {
-        group = buildHairGroup(style);           // 程序化参数曲面
+    this._spriteActive = this._useSprite(style);
+    if (this._spriteActive) {
+      try {
+        await this._buildSprite(style);
+      } catch (err) {
+        console.warn('[ARScene] 精灵构建失败，回退到程序化 3D：', err);
+        this._spriteActive = false;
+        this.hairGroup = buildHairGroup(style);
+        this.tune.add(this.hairGroup);
       }
-    } catch (err) {
-      console.warn('[ARScene] 发型构建失败，回退到程序化发型：', err);
-      group = buildHairGroup(style);
+    } else {
+      let group;
+      try {
+        if (style.modelUrl) group = await this._loadGLTF(style);
+        else if (style.simple) group = buildSimpleHair(style);
+        else group = buildHairGroup(style);
+      } catch (err) {
+        console.warn('[ARScene] 发型构建失败，回退到程序化发型：', err);
+        group = buildHairGroup(style);
+      }
+      this.hairGroup = group;
+      this.tune.add(group);
     }
 
-    this.hairGroup = group;
-    this.tune.add(group);
     if (colorHex != null) this.setColor(colorHex);
     this._applyVisibility();
-    return group;
+    return this.sprite || this.hairGroup;
+  }
+
+  /* ---------------- 2D 精灵 ---------------- */
+
+  /** 是否使用真人照片作为贴图（照片自带颜色，不染色；SVG 兜底则是单色，可换发色） */
+  async _buildSprite(style) {
+    const tex = await this._spriteTexture(style);
+    this.spriteIsPhoto = !!style.imageUrl;
+
+    const cfg = style.sprite || {};
+    const isPhoto = this.spriteIsPhoto;
+    const scale = cfg.scale ?? (isPhoto ? CONFIG.sprite.photoScale : CONFIG.sprite.silhouetteScale);
+    this.spriteYOffset = cfg.yOffset ?? (isPhoto ? CONFIG.sprite.photoYOffset : CONFIG.sprite.silhouetteYOffset);
+    const pivX = cfg.pivotX ?? CONFIG.sprite.pivotX;
+    const pivY = cfg.pivotY ?? (isPhoto ? CONFIG.sprite.photoPivotY : CONFIG.sprite.silhouettePivotY);
+    const opacity = cfg.opacity ?? CONFIG.sprite.opacity;
+
+    const mat = new THREE.SpriteMaterial({
+      map: tex, transparent: true, depthTest: false, depthWrite: false, opacity,
+    });
+    // 仅对 SVG 兜底（单色头发）应用发色；真人照片保持原色
+    if (!isPhoto) mat.color = new THREE.Color(colorToHex(style.color));
+
+    const sp = new THREE.Sprite(mat);
+    sp.center.set(pivX, pivY);     // 锚点：贴图以哪一点"贴"在头部位置（照片一般偏下，让头发落在头顶）
+    sp.renderOrder = 10;
+    this._spriteBaseScale = scale;
+    this.spriteTex = tex;
+    this.sprite = sp;
+
+    this.spriteTune = new THREE.Group();
+    this.spriteTune.add(sp);
+    this.spriteGroup.add(this.spriteTune);
+
+    this._applySpriteScale(tex);
+  }
+
+  /** 根据纹理尺寸 + 基准缩放，设置精灵的实际宽高（保持图片比例） */
+  _applySpriteScale(tex) {
+    if (!this.sprite) return;
+    const img = tex && tex.image;
+    const w = img?.width || 512, h = img?.height || 512;
+    const aspect = w / h || 1;            // 宽/高
+    const s = this._spriteBaseScale;
+    this.sprite.scale.set(s, s / aspect, 1);
+  }
+
+  /** 加载精灵贴图：真人照片走 TextureLoader；无照片则用透明头发 SVG 光栅化 */
+  async _spriteTexture(style) {
+    if (style.imageUrl) {
+      const loader = new THREE.TextureLoader();
+      return await new Promise((res, rej) => {
+        loader.load(style.imageUrl, (t) => {
+          t.colorSpace = THREE.SRGBColorSpace;
+          t.anisotropy = 4;
+          t.generateMipmaps = false;
+          res(t);
+        }, undefined, rej);
+      });
+    }
+    // 无照片：用透明、仅头发的 SVG（已把脸部挖空）光栅化成贴图
+    const svg = hairOverlaySVG(style);
+    const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const img = new Image();
+    const tex = await new Promise((res, rej) => {
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = img.width || 512; c.height = img.height || 512;
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        const t = new THREE.CanvasTexture(c);
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.generateMipmaps = false;
+        res(t);
+      };
+      img.onerror = () => rej(new Error('SVG 光栅化失败'));
+      img.src = dataUrl;
+    });
+    return tex;
+  }
+
+  _clearSprite() {
+    if (this.spriteTune) {
+      this.spriteGroup.remove(this.spriteTune);
+      this.spriteTune = null;
+    }
+    if (this.sprite) {
+      if (this.sprite.material) this.sprite.material.dispose();
+      this.sprite = null;
+    }
+    if (this.spriteTex) { this.spriteTex.dispose(); this.spriteTex = null; }
+  }
+
+  /** 对齐参考框：青色圆角矩形（贴图范围）+ 十字（中心）+ 粉色发际线，帮助把贴图对到头上 */
+  _buildAlignHelper() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 256;
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, 256, 256);
+    ctx.strokeStyle = 'rgba(34,211,238,0.9)';
+    ctx.lineWidth = 6;
+    const r = 22, m = 20, s = 256 - m * 2;
+    ctx.beginPath();
+    ctx.moveTo(m + r, m);
+    ctx.arcTo(m + s, m, m + s, m + s, r);
+    ctx.arcTo(m + s, m + s, m, m + s, r);
+    ctx.arcTo(m, m + s, m, m, r);
+    ctx.arcTo(m, m, m + s, m, r);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(128, 44); ctx.lineTo(128, 212);
+    ctx.moveTo(44, 128); ctx.lineTo(212, 128);
+    ctx.stroke();
+    // 发际线：提示头发应落到的高度（贴图锚点上移一点，让发际线压在额头）
+    ctx.strokeStyle = 'rgba(236,72,153,0.95)';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(64, 96); ctx.lineTo(192, 96);
+    ctx.stroke();
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+    sp.scale.set(2.6, 2.6, 1);
+    sp.center.set(0.5, 0.35);
+    sp.renderOrder = 20;
+    return sp;
   }
 
   /** 加载 .glb / .gltf 并归一化到"头宽 = 1"的坐标系
@@ -334,6 +526,11 @@ export class ARScene {
   }
 
   setColor(hex) {
+    // 2D 精灵且为 SVG 兜底（单色头发）时，按发色染色；真人照片保持原色
+    if (this._spriteActive && this.sprite && !this.spriteIsPhoto) {
+      this.sprite.material.color.set(hex);
+      return;
+    }
     if (this.hairGroup) applyHairColor(this.hairGroup, hex);
   }
 
@@ -427,6 +624,22 @@ export class ARScene {
     this.anchor.scale.setScalar(this._scale);
     this.anchor.visible = true;
     this._lastSeen = performance.now();
+
+    // 2D 精灵：只跟随"位置 + 缩放"，不继承旋转（billboard，侧脸仅平移）
+    if (this._spriteActive && this.spriteGroup) {
+      this.spriteGroup.position.copy(this.anchor.position);
+      this.spriteGroup.scale.setScalar(this._scale);
+      this.spriteGroup.visible = true;
+      if (this.spriteTune) {
+        this.spriteTune.position.set(
+          this.offset.x + this.tune.position.x,
+          this.offset.y + this.tune.position.y + this.spriteYOffset,
+          this.offset.z + this.tune.position.z
+        );
+        this.spriteTune.scale.setScalar(this.tune.scale);
+      }
+    }
+
     this._applyVisibility();
 
     /* --- 6. 欧拉角，供"是否正对镜头"判断 --- */
@@ -444,6 +657,7 @@ export class ARScene {
   onFaceLost() {
     if (performance.now() - this._lastSeen > CONFIG.smoothing.lostDelayMs) {
       this.anchor.visible = false;
+      this.spriteGroup.visible = false;
       this._inited = false;
       this._applyVisibility();
     }
@@ -477,12 +691,15 @@ export class ARScene {
       setOcclusion(on) { self.setOcclusion(on); console.log('[AR] 头部遮挡 =', !!on); },
       info() {
         console.log('[AR] 状态：', {
+          mode: self._spriteActive ? 'sprite(2D)' : '3d',
           anchorVisible: self.anchor.visible,
+          spriteVisible: self.spriteGroup.visible,
           pos: self.anchor.position.toArray().map(n => +n.toFixed(2)),
           scale: +self._scale.toFixed(3),
           offset: self.offset.toArray().map(n => +n.toFixed(4)),
+          spriteYOffset: +self.spriteYOffset.toFixed(3),
           test: self.testOn, debug: self.debugOn,
-          hasHair: !!self.hairGroup,
+          hasHair: !!self.hairGroup, hasSprite: !!self.sprite,
         });
       },
     };
