@@ -455,6 +455,202 @@
       }
     },
     {
+      "id": "twintail",
+      "name": "甜美双马尾",
+      "category": "medium",
+      "tag": "双马尾 · 减龄",
+      "desc": "左右两束高扎马尾，自带少女感，能把视觉重心拉向两侧、弱化下颌宽度。",
+      "color": "#2a2226",
+      "fit": {
+        "oval": 0.9,
+        "round": 0.8,
+        "square": 0.74,
+        "oblong": 0.78,
+        "heart": 0.82,
+        "diamond": 0.78,
+        "pear": 0.8
+      },
+      "params": {
+        "volume": 1.18,
+        "frontPhi": 0.95,
+        "sidePhi": 1.44,
+        "backPhi": 1.8,
+        "frontLen": 0.16,
+        "sideLen": 0.18,
+        "backLen": 0.16,
+        "wave": 0.05,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "twintail"
+      }
+    },
+    {
+      "id": "braid",
+      "name": "侧边麻花辫",
+      "category": "long",
+      "tag": "编发 · 文艺",
+      "desc": "两股麻花辫自耳侧垂落，纹理清晰、氛围感强，适合修饰偏宽的颧骨与下颌。",
+      "color": "#2f2620",
+      "fit": {
+        "oval": 0.88,
+        "round": 0.72,
+        "square": 0.78,
+        "oblong": 0.8,
+        "heart": 0.82,
+        "diamond": 0.8,
+        "pear": 0.82
+      },
+      "params": {
+        "volume": 1.06,
+        "frontPhi": 0.92,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 1.1,
+        "backLen": 1.3,
+        "wave": 0.04,
+        "waveFreq": 3,
+        "curl": 0.008,
+        "part": 1,
+        "taper": 0.6,
+        "extra": "braids"
+      }
+    },
+    {
+      "id": "topknot",
+      "name": "日系高发髻",
+      "category": "short",
+      "tag": "发髻 · 利落",
+      "desc": "头顶小发髻把高度提到极致，干净利落又显脸小，尤其适合长脸与短脸。",
+      "color": "#241c20",
+      "fit": {
+        "oval": 0.9,
+        "round": 0.84,
+        "square": 0.7,
+        "oblong": 0.58,
+        "heart": 0.78,
+        "diamond": 0.72,
+        "pear": 0.82
+      },
+      "params": {
+        "volume": 1.08,
+        "frontPhi": 0.88,
+        "sidePhi": 1.36,
+        "backPhi": 1.74,
+        "frontLen": 0.1,
+        "sideLen": 0.1,
+        "backLen": 0.06,
+        "wave": 0.02,
+        "waveFreq": 2,
+        "curl": 0.005,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "topknot"
+      }
+    },
+    {
+      "id": "spacebun",
+      "name": "甜酷双丸子头",
+      "category": "medium",
+      "tag": "双丸子 · 个性",
+      "desc": "左右两个丸子头，俏皮又有辨识度，能平衡偏长或偏方的脸型比例。",
+      "color": "#3a2718",
+      "fit": {
+        "oval": 0.86,
+        "round": 0.82,
+        "square": 0.68,
+        "oblong": 0.56,
+        "heart": 0.76,
+        "diamond": 0.7,
+        "pear": 0.8
+      },
+      "params": {
+        "volume": 1.1,
+        "frontPhi": 0.9,
+        "sidePhi": 1.4,
+        "backPhi": 1.78,
+        "frontLen": 0.12,
+        "sideLen": 0.2,
+        "backLen": 0.14,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.008,
+        "part": 0,
+        "taper": 0.5,
+        "extra": "spacebun"
+      }
+    },
+    {
+      "id": "hime",
+      "name": "公主切姬发式",
+      "category": "medium",
+      "tag": "姬发 · 二次元",
+      "desc": "厚齐刘海 + 两侧一刀切长直发，线条利落、个性鲜明，是二次元氛围感的代表发型。",
+      "color": "#2b2124",
+      "fit": {
+        "oval": 0.82,
+        "round": 0.78,
+        "square": 0.84,
+        "oblong": 0.8,
+        "heart": 0.8,
+        "diamond": 0.82,
+        "pear": 0.84
+      },
+      "params": {
+        "volume": 1.05,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.26,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.04,
+        "waveFreq": 2.5,
+        "curl": 0.005,
+        "part": 0,
+        "taper": 0.82,
+        "layers": [
+          {
+            "lenScale": 0.6,
+            "volume": 1.02
+          }
+        ]
+      }
+    },
+    {
+      "id": "collarbone",
+      "name": "气质锁骨发",
+      "category": "medium",
+      "tag": "锁骨发 · 知性",
+      "desc": "长度刚到锁骨，发尾微内扣，优雅知性又不显拖沓，是百搭的安全牌。",
+      "color": "#352218",
+      "fit": {
+        "oval": 0.92,
+        "round": 0.84,
+        "square": 0.8,
+        "oblong": 0.78,
+        "heart": 0.82,
+        "diamond": 0.8,
+        "pear": 0.84
+      },
+      "params": {
+        "volume": 1.09,
+        "frontPhi": 0.96,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 0.72,
+        "backLen": 0.8,
+        "wave": 0.05,
+        "waveFreq": 2.5,
+        "curl": 0.005,
+        "part": 1,
+        "taper": 0.66
+      }
+    },
+    {
       "id": "bob3d",
       "name": "波波头 (真实3D模型)",
       "category": "medium",
@@ -608,10 +804,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.2200000000000002,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.18,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.09,
+        "waveFreq": 4,
+        "curl": 0.012,
+        "part": 1,
+        "taper": 0.55
       }
     },
     {
@@ -650,10 +854,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.2,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.8
       }
     },
     {
@@ -694,10 +906,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.07,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.26,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.78
       }
     },
     {
@@ -735,10 +955,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.1,
+        "sideLen": 0.12,
+        "backLen": 0.9,
+        "wave": 0.02,
+        "waveFreq": 4,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.8,
+        "layers": [
+          {
+            "lenScale": 0.4,
+            "volume": 1.08
+          }
+        ]
       }
     },
     {
@@ -778,10 +1012,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.34,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.2,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.06,
+        "waveFreq": 4,
+        "curl": 0.05,
+        "part": 0,
+        "taper": 0.55
       }
     },
     {
@@ -820,10 +1062,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.2,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.02,
+        "waveFreq": 4,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.78
       }
     },
     {
@@ -860,10 +1110,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.08,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.18,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.09,
+        "waveFreq": 4,
+        "curl": 0.012,
+        "part": 1,
+        "taper": 0.5
       }
     },
     {
@@ -904,10 +1162,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.18,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.02,
+        "waveFreq": 4,
+        "curl": 0.003,
+        "part": 1,
+        "taper": 0.78
       }
     },
     {
@@ -944,10 +1210,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.05,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.26,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.02,
+        "waveFreq": 2.5,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.82,
+        "layers": [
+          {
+            "lenScale": 0.6,
+            "volume": 1.02
+          }
+        ]
       }
     },
     {
@@ -986,10 +1266,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.2000000000000002,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.1,
+        "sideLen": 0.12,
+        "backLen": 0.9,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.5,
+        "layers": [
+          {
+            "lenScale": 0.4,
+            "volume": 1.08
+          }
+        ]
       }
     },
     {
@@ -1021,10 +1315,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 2.5,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1055,10 +1357,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.08,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.1,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.5
       }
     },
     {
@@ -1089,10 +1399,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1124,10 +1442,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1156,10 +1482,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 3,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1191,10 +1525,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.08,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.18,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 1,
+        "taper": 0.5
       }
     },
     {
@@ -1223,10 +1565,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.28,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.06,
+        "waveFreq": 2.5,
+        "curl": 0.05,
+        "part": 0,
+        "taper": 0.65
       }
     },
     {
@@ -1258,10 +1608,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.1,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.09,
+        "waveFreq": 4,
+        "curl": 0.012,
+        "part": 0,
+        "taper": 0.65
       }
     },
     {
@@ -1293,10 +1651,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 2.5,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1327,10 +1693,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 2.5,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     },
     {
@@ -1370,10 +1744,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.2000000000000002,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.2,
+        "sideLen": 0.12,
+        "backLen": 0.9,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.5,
+        "layers": [
+          {
+            "lenScale": 0.4,
+            "volume": 1.08
+          }
+        ]
       }
     },
     {
@@ -1413,10 +1801,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.08,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.1,
+        "sideLen": 0.12,
+        "backLen": 0.12,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.5
       }
     },
     {
@@ -1453,10 +1849,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.02,
+        "waveFreq": 2.5,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.78,
+        "layers": [
+          {
+            "lenScale": 0.6,
+            "volume": 1.04
+          }
+        ]
       }
     },
     {
@@ -1492,10 +1902,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.08,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.26,
+        "sideLen": 0.6,
+        "backLen": 0.66,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.75
       }
     },
     {
@@ -1533,10 +1951,19 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.1,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.12,
+        "sideLen": 0.55,
+        "backLen": 0.62,
+        "wave": 0.04,
+        "waveFreq": 2.5,
+        "curl": 0.005,
+        "part": 0,
+        "taper": 0.65,
+        "extra": "braids"
       }
     },
     {
@@ -1574,10 +2001,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.2000000000000002,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.1,
+        "sideLen": 0.6,
+        "backLen": 0.66,
+        "wave": 0.03,
+        "waveFreq": 3,
+        "curl": 0.006,
+        "part": 0,
+        "taper": 0.75
       }
     },
     {
@@ -1618,10 +2053,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.12,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.02,
+        "waveFreq": 5,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.78
       }
     },
     {
@@ -1657,10 +2100,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.19,
+        "frontPhi": 0.95,
+        "sidePhi": 1.52,
+        "backPhi": 1.9,
+        "frontLen": 0.26,
+        "sideLen": 1.45,
+        "backLen": 1.62,
+        "wave": 0.02,
+        "waveFreq": 4,
+        "curl": 0.003,
+        "part": 0,
+        "taper": 0.78
       }
     },
     {
@@ -1698,10 +2149,24 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.2000000000000002,
+        "frontPhi": 0.95,
+        "sidePhi": 1.42,
+        "backPhi": 1.8,
+        "frontLen": 0.2,
+        "sideLen": 0.6,
+        "backLen": 0.66,
+        "wave": 0.09,
+        "waveFreq": 4,
+        "curl": 0.012,
+        "part": 0,
+        "taper": 0.75,
+        "layers": [
+          {
+            "lenScale": 0.4,
+            "volume": 1.08
+          }
+        ]
       }
     },
     {
@@ -1744,10 +2209,18 @@
       "modelRotY": 0,
       "fit": "all",
       "params": {
-        "sideLen": 0.5,
-        "frontLen": 0.6,
-        "volume": 0.5,
-        "curl": 0.3
+        "volume": 1.04,
+        "frontPhi": 0.97,
+        "sidePhi": 1.5,
+        "backPhi": 1.86,
+        "frontLen": 0.04,
+        "sideLen": 0.02,
+        "backLen": 0.03,
+        "wave": 0.02,
+        "waveFreq": 4,
+        "curl": 0.004,
+        "part": 0,
+        "taper": 0.4
       }
     }
   ]

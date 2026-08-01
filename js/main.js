@@ -163,11 +163,15 @@ async function pickStyle(id, byUser = true) {
   if (style.modelUrl) {
     // 有 3D 模型 → 进入 AR 实时试戴
     if (state.ar) await state.ar.setStyle(style, state.colorHex);
+  } else if (style.params || style.simple) {
+    // 程序化 3D 发型（内置 14 款 / Excel 参数化款 / 演示发型）→ AR 试戴
+    // 不需要任何外部模型文件，纯代码生成，零资源即可试戴
+    if (state.ar) await state.ar.setStyle(style, state.colorHex);
   } else if (style.imageUrl && byUser) {
-    // 只有参考图、无 3D 模型 → 弹大图（仅用户主动点击才弹，自动切换不打扰）
+    // 只有参考图、既无模型也无参数 → 弹大图（仅用户主动点击才弹，自动切换不打扰）
     UI.showHairImage(style);
   }
-  // 既无 3D 模型也无图片：不操作
+  // 既无 3D 模型也无参数也无图片：不操作
 }
 
 /* ------------------------------------------------------------------ */

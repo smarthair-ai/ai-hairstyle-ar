@@ -329,6 +329,14 @@ input[type=range]::-moz-range-thumb { width: 13px; height: 13px; border-radius: 
   font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 7px;
   background: rgba(255,255,255,.92); color: var(--text-2); border: 1px solid var(--line);
 }
+.style-card .img-view {
+  position: absolute; top: 30px; right: 7px; z-index: 3;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 7px;
+  display: grid; place-items: center;
+  font-size: 10px; font-weight: 800; cursor: pointer;
+  background: var(--brand); color: #fff;
+}
+.style-card .img-view:hover { filter: brightness(1.1); }
 
 /* 发型参考大图弹窗 */
 .modal {

@@ -293,3 +293,12 @@ git push origin main      # 触发 GitHub Pages 自动重建
 打开站点 → 开启摄像头 → 点分类按钮加载该发型 → 用「发型位置微调」**X / Y / Z 滑块**把发型拖到头顶对齐。若初始位置仍偏，可改 `hairDatabase.json` 里的 `modelOffset` / `modelRotY` 后重新 push。
 
 > 嫌命令行麻烦？直接把 `.glb` 文件或下载链接发给我，我帮你接入、提交并部署好，你只管去网页试戴。
+
+### 零资源也能试戴（无需下载任何模型）
+
+`hairDatabase.json` 里的发型分为两类，都能直接在 AR 里试戴，**都不需要任何外部 `.glb` 文件**：
+
+- **程序化 3D 发型**：靠 `params`（长度 / 卷度 / 蓬松 / 分缝 / extra 部件）在运行时用 Three.js 实时生成。内置 14 款 + 新增 6 款（`twintail` 双马尾、`braid` 麻花辫、`topknot` 高发髻、`spacebun` 双丸子头、`hime` 公主切、`collarbone` 锁骨发）均属此类，点击即试戴。
+- **收集表 30 款**：原本只有参考图，现已通过 `tools/infer_hair_params.py` 根据其名称 / 特点 / 分类推断 `params`，**全部转为可 AR 试戴的 3D 发型**（有图的同时也能试戴，卡片右上「图」角标可看参考大图）。
+
+想扩充零资源发型库：直接往 `hairDatabase.json` 的 `models` 数组加一项，填好 `params`（或 `extra`）即可，无需模型文件。已有 `tools/infer_hair_params.py` 可批量按名称特征回填 `params`。

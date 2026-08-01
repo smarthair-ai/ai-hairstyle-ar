@@ -185,6 +185,77 @@ export const HAIRSTYLES = [
     color: 0x2b2230, simple: true,
     fit: { oval: .7, round: .7, square: .7, oblong: .7, heart: .7, diamond: .7, pear: .7 },
   },
+  {
+    id: 'twintail', name: '甜美双马尾', category: 'medium', tag: '双马尾 · 减龄',
+    desc: '左右两束高扎马尾，自带少女感，能把视觉重心拉向两侧、弱化下颌宽度。',
+    color: 0x2a2226,
+    fit: { oval: .90, round: .80, square: .74, oblong: .78, heart: .82, diamond: .78, pear: .80 },
+    params: {
+      volume: 1.18, frontPhi: 0.95, sidePhi: 1.44, backPhi: 1.80,
+      frontLen: 0.16, sideLen: 0.18, backLen: 0.16,
+      wave: 0.05, waveFreq: 3, curl: 0.006, part: 0, taper: 0.5,
+      extra: 'twintail',
+    },
+  },
+  {
+    id: 'braid', name: '侧边麻花辫', category: 'long', tag: '编发 · 文艺',
+    desc: '两股麻花辫自耳侧垂落，纹理清晰、氛围感强，适合修饰偏宽的颧骨与下颌。',
+    color: 0x2f2620,
+    fit: { oval: .88, round: .72, square: .78, oblong: .80, heart: .82, diamond: .80, pear: .82 },
+    params: {
+      volume: 1.06, frontPhi: 0.92, sidePhi: 1.50, backPhi: 1.86,
+      frontLen: 0.12, sideLen: 1.10, backLen: 1.30,
+      wave: 0.04, waveFreq: 3, curl: 0.008, part: 1, taper: 0.6,
+      extra: 'braids',
+    },
+  },
+  {
+    id: 'topknot', name: '日系高发髻', category: 'short', tag: '发髻 · 利落',
+    desc: '头顶小发髻把高度提到极致，干净利落又显脸小，尤其适合长脸与短脸。',
+    color: 0x241c20,
+    fit: { oval: .90, round: .84, square: .70, oblong: .58, heart: .78, diamond: .72, pear: .82 },
+    params: {
+      volume: 1.08, frontPhi: 0.88, sidePhi: 1.36, backPhi: 1.74,
+      frontLen: 0.10, sideLen: 0.10, backLen: 0.06,
+      wave: 0.02, waveFreq: 2, curl: 0.005, part: 0, taper: 0.5,
+      extra: 'topknot',
+    },
+  },
+  {
+    id: 'spacebun', name: '甜酷双丸子头', category: 'medium', tag: '双丸子 · 个性',
+    desc: '左右两个丸子头，俏皮又有辨识度，能平衡偏长或偏方的脸型比例。',
+    color: 0x3a2718,
+    fit: { oval: .86, round: .82, square: .68, oblong: .56, heart: .76, diamond: .70, pear: .80 },
+    params: {
+      volume: 1.10, frontPhi: 0.90, sidePhi: 1.40, backPhi: 1.78,
+      frontLen: 0.12, sideLen: 0.20, backLen: 0.14,
+      wave: 0.03, waveFreq: 3, curl: 0.008, part: 0, taper: 0.5,
+      extra: 'spacebun',
+    },
+  },
+  {
+    id: 'hime', name: '公主切姬发式', category: 'medium', tag: '姬发 · 二次元',
+    desc: '厚齐刘海 + 两侧一刀切长直发，线条利落、个性鲜明，是二次元氛围感的代表发型。',
+    color: 0x2b2124,
+    fit: { oval: .82, round: .78, square: .84, oblong: .80, heart: .80, diamond: .82, pear: .84 },
+    params: {
+      volume: 1.05, frontPhi: 0.98, sidePhi: 1.50, backPhi: 1.84,
+      frontLen: 0.26, sideLen: 0.58, backLen: 0.62,
+      wave: 0.015, waveFreq: 2, curl: 0.003, part: 0, taper: 0.82,
+      layers: [{ lenScale: 0.6, volume: 1.02 }],
+    },
+  },
+  {
+    id: 'collarbone', name: '气质锁骨发', category: 'medium', tag: '锁骨发 · 知性',
+    desc: '长度刚到锁骨，发尾微内扣，优雅知性又不显拖沓，是百搭的安全牌。',
+    color: 0x352218,
+    fit: { oval: .92, round: .84, square: .80, oblong: .78, heart: .82, diamond: .80, pear: .84 },
+    params: {
+      volume: 1.09, frontPhi: 0.96, sidePhi: 1.50, backPhi: 1.86,
+      frontLen: 0.12, sideLen: 0.72, backLen: 0.80,
+      wave: 0.05, waveFreq: 2.5, curl: 0.005, part: 1, taper: 0.66,
+    },
+  },
 ];
 
 /* ------------------------------------------------------------------ */

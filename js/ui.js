@@ -35,6 +35,10 @@ export function styleThumb(style) {
   let extra = '';
   if (p.extra === 'ponytail') extra += `<ellipse cx="50" cy="86" rx="9" ry="15" fill="${hair}"/><circle cx="50" cy="26" r="7" fill="${hair}"/>`;
   if (p.extra === 'bun') extra += `<circle cx="50" cy="12" r="11" fill="${hair}"/><ellipse cx="50" cy="21" rx="8" ry="3" fill="${hairLight}"/>`;
+  if (p.extra === 'twintail') extra += `<circle cx="22" cy="20" r="7" fill="${hair}"/><circle cx="78" cy="20" r="7" fill="${hair}"/>`;
+  if (p.extra === 'braids') extra += `<circle cx="24" cy="30" r="6" fill="${hair}"/><circle cx="76" cy="30" r="6" fill="${hair}"/>`;
+  if (p.extra === 'topknot') extra += `<circle cx="50" cy="6" r="10" fill="${hair}"/>`;
+  if (p.extra === 'spacebun') extra += `<circle cx="34" cy="10" r="8" fill="${hair}"/><circle cx="66" cy="10" r="8" fill="${hair}"/>`;
   if ((p.curl ?? 0) > 0.03) {
     for (let i = 0; i < 14; i++) {
       const a = (i / 14) * Math.PI * 2;
@@ -124,7 +128,7 @@ function escapeHtml(t) {
   ));
 }
 
-/** 发型列表（图片优先，含特点 + 打理难度标签；无 3D 模型标「参考图」角标） */
+/** 发型列表（图片优先，含特点 + 打理难度标签；不可 3D 试戴的标「参考图」） */
 export function renderStyleGrid(list, activeId, onPick) {
   const grid = el('styleGrid');
   grid.innerHTML = list.map((s, i) => {
@@ -136,11 +140,14 @@ export function renderStyleGrid(list, activeId, onPick) {
     const diff = s.difficulty
       ? `<span class="diff diff-${s.difficultyLevel || 'unknown'}">${escapeHtml(s.difficulty)}</span>`
       : '';
-    const no3d = s.modelUrl ? '' : '<span class="no3d">参考图</span>';
+    // 有 3D 模型 / 程序化参数 / 演示发型 → 可 AR 试戴；只有参考图则标「参考图」
+    const tryon = s.modelUrl || s.params || s.simple;
+    const no3d = tryon ? '' : '<span class="no3d">参考图</span>';
+    const imgBtn = s.imageUrl ? `<span class="img-view" title="查看参考图" data-id="${s.id}">图</span>` : '';
     const score = (s.score != null) ? s.score : '';
     return `<button class="style-card ${s.id === activeId ? 'active' : ''}" data-id="${s.id}" type="button">
       <span class="score ${i < 3 ? 'hot' : ''}">${score}</span>
-      ${no3d}
+      ${no3d}${imgBtn}
       <div class="thumb">${thumb}</div>
       <span class="name">${escapeHtml(s.name)}</span>
       <div class="feats">${feats}</div>
@@ -150,6 +157,14 @@ export function renderStyleGrid(list, activeId, onPick) {
 
   grid.querySelectorAll('.style-card').forEach(btn => {
     btn.addEventListener('click', () => onPick(btn.dataset.id));
+  });
+  // 「图」角标：单独查看参考大图，不触发试戴
+  grid.querySelectorAll('.img-view').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const st = list.find(x => x.id === b.dataset.id);
+      if (st) showHairImage(st);
+    });
   });
 }
 

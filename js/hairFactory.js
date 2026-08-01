@@ -311,6 +311,74 @@ export function buildHairGroup(style) {
     materials.push(bandMat);
   }
 
+  // 双马尾（左右各一束，从耳侧垂下）
+  if (p.extra === 'twintail') {
+    const mat = hairMaterial(style.color ?? 0x241d1f);
+    const knotMat = hairMaterial(style.color ?? 0x241d1f);
+    for (const sx of [-1, 1]) {
+      const tail = new THREE.Mesh(
+        taperedTube(new THREE.CatmullRomCurve3([
+          new THREE.Vector3(sx * 0.34, 0.46, -0.12),
+          new THREE.Vector3(sx * 0.55, 0.10, -0.32),
+          new THREE.Vector3(sx * 0.62, -0.34, -0.40),
+          new THREE.Vector3(sx * 0.56, -0.78, -0.30),
+        ]), (t) => 0.115 * (1 - 0.55 * t * t) + 0.012, 40, 12), mat);
+      tail.frustumCulled = false;
+      group.add(tail); materials.push(mat);
+      const knot = new THREE.Mesh(ensureVertexColor(new THREE.SphereGeometry(0.10, 18, 12)), knotMat);
+      knot.position.set(sx * 0.34, 0.48, -0.12);
+      group.add(knot); materials.push(knotMat);
+    }
+  }
+
+  // 麻花辫（双股，自耳侧垂落，用正弦摆动模拟辫节）
+  if (p.extra === 'braids') {
+    const mat = hairMaterial(style.color ?? 0x241d1f);
+    const knotMat = hairMaterial(style.color ?? 0x241d1f);
+    for (const sx of [-1, 1]) {
+      const pts = [];
+      for (let k = 0; k <= 10; k++) {
+        const t = k / 10;
+        const y = 0.50 - t * 0.98;
+        const z = -0.10 - t * 0.34;
+        const wob = Math.sin(t * Math.PI * 5) * 0.05;
+        pts.push(new THREE.Vector3(sx * (0.30 + t * 0.22), y, z + wob * sx));
+      }
+      const braid = new THREE.Mesh(
+        taperedTube(new THREE.CatmullRomCurve3(pts),
+          (t) => 0.085 * (1 - 0.45 * t * t) + 0.01, 60, 10), mat);
+      braid.frustumCulled = false;
+      group.add(braid); materials.push(mat);
+      const knot = new THREE.Mesh(ensureVertexColor(new THREE.SphereGeometry(0.085, 16, 10)), knotMat);
+      knot.position.set(sx * 0.30, 0.52, -0.10);
+      group.add(knot); materials.push(knotMat);
+    }
+  }
+
+  // 高发髻（顶部小发髻）
+  if (p.extra === 'topknot') {
+    const mat = hairMaterial(style.color ?? 0x241d1f);
+    const knot = new THREE.Mesh(ensureVertexColor(new THREE.SphereGeometry(0.20, 24, 16)), mat);
+    knot.scale.set(1.0, 0.82, 0.92);
+    knot.position.set(0, 0.72, -0.06);
+    group.add(knot); materials.push(mat);
+    const band = new THREE.Mesh(ensureVertexColor(new THREE.TorusGeometry(0.12, 0.03, 10, 22)), mat);
+    band.rotation.x = Math.PI / 2;
+    band.position.set(0, 0.58, -0.04);
+    group.add(band); materials.push(mat);
+  }
+
+  // 双丸子头（左右各一丸）
+  if (p.extra === 'spacebun') {
+    const mat = hairMaterial(style.color ?? 0x241d1f);
+    for (const sx of [-1, 1]) {
+      const bun = new THREE.Mesh(ensureVertexColor(new THREE.SphereGeometry(0.18, 22, 14)), mat);
+      bun.scale.set(1.0, 0.86, 0.94);
+      bun.position.set(sx * 0.34, 0.60, -0.12);
+      group.add(bun); materials.push(mat);
+    }
+  }
+
   group.userData.materials = materials;
   return group;
 }
