@@ -32,6 +32,20 @@ export const CONFIG = {
     delegate: 'GPU',
   },
 
+  /* ---------- 人脸检测参数（排查"检测不到人脸"时优先调这里） ---------- */
+  detect: {
+    runningMode: 'VIDEO',            // 视频流必须用 VIDEO；用 IMAGE 会导致跟踪失效
+    numFaces: 2,                     // 放宽到 2：多人/误检时仍能选出最大的那张脸
+    minFaceDetectionConfidence: 0.3, // 从 0.5 降到 0.3：暗光 / 逆光 / 戴眼镜更容易检出
+    minFacePresenceConfidence: 0.3,
+    minTrackingConfidence: 0.3,
+
+    // 连续多少毫秒检不到脸就自动把 GPU 代理降级为 CPU 重建一次（只做一次）
+    autoFallbackAfterMs: 4000,
+    // 视频帧尺寸为 0 时的保护：跳过推理而不是抛异常
+    requireVideoSize: true,
+  },
+
   /* ---------- 摄像头 ---------- */
   camera: {
     width: 1280,

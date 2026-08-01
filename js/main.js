@@ -11,6 +11,7 @@ import { measure, classify, ShapeAccumulator, LM } from './faceShape.js';
 import { recommend, getStyle, loadHairDB } from './hairDB.js';
 import { ARScene } from './arScene.js';
 import { HairOverlay } from './hairOverlay.js';
+import { drawDetectDebug } from './detectDebug.js';
 import * as UI from './ui.js';
 
 /* ------------------------------------------------------------------ */
@@ -36,7 +37,16 @@ const state = {
   frame: 0,
   lastPose: null,
   showMesh: false,
+  showDetectDebug: false,   // 检测调试可视化（画检测框 + 状态）
   eco: false,
+
+  // 视频帧尺寸：start() 里赋值，loop() 里要用（之前误用了 start 的局部变量导致 ReferenceError）
+  vw: 0,
+  vh: 0,
+
+  loopErrors: 0,            // 主循环异常计数，防止同一个错误刷屏
+  lastLoopError: null,
+  lastFaceAt: 0,            // 最近一次检出人脸的时间（用于丢脸宽限期）
 
   fps: { last: performance.now(), frames: 0, value: 0 },
 };
@@ -99,6 +109,11 @@ function initUI() {
   UI.el('meshChk').addEventListener('change', e => {
     state.showMesh = e.target.checked;
     if (!state.showMesh) octx.clearRect(0, 0, overlay.width, overlay.height);
+  });
+  // 检测调试：在画面上画人脸框 + 检测状态，肉眼确认 MediaPipe 是否在工作
+  UI.el('detectDbgChk')?.addEventListener('change', e => {
+    state.showDetectDebug = e.target.checked;
+    if (!state.showDetectDebug) octx.clearRect(0, 0, overlay.width, overlay.height);
   });
   UI.el('occChk').addEventListener('change', e => state.ar?.setOcclusion(e.target.checked));
   UI.el('ecoChk').addEventListener('change', e => {
@@ -231,6 +246,9 @@ async function start() {
 
   const vw = video.videoWidth || CONFIG.camera.width;
   const vh = video.videoHeight || CONFIG.camera.height;
+  // 存进全局 state：主循环需要读取（局部 const 在 loop() 里不可见）
+  state.vw = vw;
+  state.vh = vh;
 
   // 让舞台的宽高比与摄像头一致 → object-fit:cover 不会裁切，AR 才能严格对齐
   UI.el('stage').style.aspectRatio = `${vw} / ${vh}`;
@@ -398,39 +416,98 @@ function loop(now) {
   if (!state.running) return;
   requestAnimationFrame(loop);
 
+  // 整个循环体包一层 try/catch：
+  // 之前 loop 里引用了 start() 的局部变量 vw/vh，一旦检测到人脸就抛 ReferenceError，
+  // 导致后面的 HUD 更新、render、tickFps 全部被跳过 —— 表现就是
+  // “画面正常、FPS 卡在某个数字不动、永远提示没检测到人脸”。
+  // 这里兜住任何意外异常，保证渲染与状态更新不会被单帧错误整体冻结。
+  try {
+    stepFrame(now);
+  } catch (err) {
+    state.loopErrors++;
+    const msg = String(err?.message || err);
+    if (msg !== state.lastLoopError) {
+      state.lastLoopError = msg;
+      console.error('[主循环异常]', err);
+    }
+    // 前几次把错误直接暴露到 HUD，避免"静默失效"
+    if (state.loopErrors <= 3) UI.setHud('渲染循环异常：' + msg);
+  }
+
+  try { state.ar?.render(); } catch (_) {}
+  tickFps(now);
+}
+
+/** 单帧处理：检测 → 驱动 2D 叠加层 / 3D 场景 → 脸型分析 → UI 状态 */
+function stepFrame(now) {
   if (video.readyState < 2) return;
   state.frame++;
 
-  // 省电模式下跳帧推理，中间帧继续用上一次的位姿（平滑器会补足过渡）
-  const doDetect = !state.eco || (state.frame % CONFIG.perf.ecoDetectInterval === 0);
-
-  if (doDetect) {
-    const res = state.tracker?.detect(video, now);
-    if (res) {
-      state.lastPose = state.ar.updateFromFace(res.landmarks, res.matrix);
-      // 2D 叠加层：用关键点直接定位（比 3D 投影更直观）
-      if (state.overlay) {
-        state.overlay.updateFromFace(res.landmarks, state.lastPose, vw, vh);
-      }
-      handleAnalysis(res.landmarks);
-      if (state.showMesh) drawLandmarks(res.landmarks);
-      else if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
-      // 正面/侧脸 提示：根据偏航角更新角标（侧脸时 2D 贴图会有偏差）
-      if (state.lastPose) UI.setFaceMode(state.lastPose.yawDeg);
-      // 底部状态栏
-      UI.setStageStatus(true, state.lastPose?.yawDeg);
-    } else {
-      state.ar.onFaceLost();
-      if (state.overlay) state.overlay.hide();
-      UI.setHud('没有检测到人脸，请正对摄像头');
-      UI.setFaceMode(null);          // 丢失人脸：隐藏正/侧脸角标
-      UI.setStageStatus(false);       // 隐藏底部状态栏
-      if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
-    }
+  // 摄像头首帧之后尺寸才稳定，这里持续同步，避免 0 尺寸导致定位错乱
+  if (video.videoWidth && video.videoWidth !== state.vw) {
+    state.vw = video.videoWidth;
+    state.vh = video.videoHeight;
+    if (overlay.width !== state.vw) { overlay.width = state.vw; overlay.height = state.vh; }
   }
 
-  state.ar.render();
-  tickFps(now);
+  // 省电模式下跳帧推理，中间帧继续用上一次的位姿（平滑器会补足过渡）
+  const doDetect = !state.eco || (state.frame % CONFIG.perf.ecoDetectInterval === 0);
+  if (!doDetect) return;
+
+  const res = state.tracker?.detect(video, now);
+
+  if (res) {
+    state.lastFaceAt = now;
+    state.lastPose = state.ar.updateFromFace(res.landmarks, res.matrix);
+
+    // 2D 叠加层：用关键点直接定位（比 3D 投影更直观）
+    if (state.overlay) {
+      // 上一帧丢脸时被 hide() 了，这里必须重新 show()，否则 updateFromFace 会直接 return
+      // （图片还没加载完就不要显示，避免闪一个空框）
+      if (!state.overlay.visible && state.overlay._loaded) state.overlay.show();
+      state.overlay.updateFromFace(res.landmarks, state.lastPose, state.vw, state.vh);
+    }
+
+    handleAnalysis(res.landmarks);
+
+    // 叠加层绘制：检测调试框优先，其次关键点网格
+    if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
+    if (state.showMesh) drawLandmarks(res.landmarks);
+    if (state.showDetectDebug && state.tracker) {
+      drawDetectDebug(octx, res.landmarks, state.tracker.stats);
+    }
+
+    // 正面/侧脸 提示：根据偏航角更新角标（侧脸时 2D 贴图会有偏差）
+    if (state.lastPose) UI.setFaceMode(state.lastPose.yawDeg);
+    UI.setStageStatus(true, state.lastPose?.yawDeg);
+  } else {
+    state.ar.onFaceLost();
+    // 瞬时漏检很常见（眨眼 / 快速转头），加一段宽限期再隐藏，避免发型闪烁
+    const lostFor = now - (state.lastFaceAt || 0);
+    if (lostFor > CONFIG.smoothing.lostDelayMs) {
+      if (state.overlay?.visible) state.overlay.hide();
+      UI.setHud(noFaceHint());
+      UI.setFaceMode(null);          // 丢失人脸：隐藏正/侧脸角标
+      UI.setStageStatus(false);       // 隐藏底部状态栏
+    }
+
+    if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
+    if (state.showDetectDebug && state.tracker) {
+      drawDetectDebug(octx, null, state.tracker.stats);
+    }
+  }
+}
+
+/** 检不到脸时给出「有信息量」的提示，而不是永远一句话 */
+function noFaceHint() {
+  const s = state.tracker?.stats;
+  if (!s) return '检测器未就绪…';
+  if (s.errors > 0 && s.hits === 0) return `推理异常：${s.lastError || '未知错误'}`;
+  if (s.skippedNoSize > 0 && s.attempts === 0) return '等待摄像头输出画面…';
+  if (s.hits === 0 && s.attempts > 60) {
+    return `没有检测到人脸（已推理 ${s.attempts} 帧，后端 ${s.delegate}）—— 试试靠近镜头、增加光照`;
+  }
+  return '没有检测到人脸，请正对摄像头';
 }
 
 function tickFps(now) {
@@ -560,4 +637,56 @@ function snapshot() {
 }
 
 /* ------------------------------------------------------------------ */
+/* 控制台诊断接口：window.FD                                            */
+/* ------------------------------------------------------------------ */
+function installDebugAPI() {
+  window.FD = {
+    /** 打印完整体检报告 */
+    diagnose() {
+      const s = state.tracker?.stats;
+      const report = {
+        '页面协议': location.protocol + (window.isSecureContext ? '（安全上下文 ✓）' : '（非安全上下文 ✗）'),
+        '循环运行中': state.running,
+        '视频 readyState': video.readyState + ' (需 ≥2)',
+        '视频尺寸': `${video.videoWidth}×${video.videoHeight}`,
+        '视频是否暂停': video.paused,
+        '媒体轨道': state.stream?.getVideoTracks().map(t => `${t.label} [${t.readyState}]`) ?? '无',
+        '检测器就绪': !!state.tracker?.ready,
+        '推理后端': s?.delegate ?? '-',
+        '模型地址': s?.modelUrl ?? '-',
+        '推理帧数': s?.attempts ?? 0,
+        '命中帧数': s?.hits ?? 0,
+        '未命中帧数': s?.misses ?? 0,
+        '推理异常次数': s?.errors ?? 0,
+        '最近错误': s?.lastError ?? '无',
+        '本帧检出人脸数': s?.lastFaceCount ?? 0,
+        '因尺寸为0跳过': s?.skippedNoSize ?? 0,
+        '主循环异常次数': state.loopErrors,
+        '主循环最近错误': state.lastLoopError ?? '无',
+        '检测阈值': CONFIG.detect.minFaceDetectionConfidence,
+        'numFaces': CONFIG.detect.numFaces,
+        'runningMode': CONFIG.detect.runningMode,
+        'FPS': state.fps.value,
+      };
+      console.table(report);
+      return report;
+    },
+    stats: () => state.tracker?.stats,
+    /** 开/关画面上的检测框可视化 */
+    debug(on = true) {
+      state.showDetectDebug = !!on;
+      const c = UI.el('detectDbgChk');
+      if (c) c.checked = !!on;
+      return on;
+    },
+    /** 手动切后端：FD.useBackend('CPU') */
+    useBackend: (d = 'CPU') => state.tracker?.useBackend(d),
+    /** 手动降阈值：FD.setConfidence(0.2) */
+    setConfidence: (v = 0.2) => state.tracker?.setConfidence(v),
+  };
+  console.info('%c[诊断] 输入 FD.diagnose() 查看人脸检测体检报告；FD.debug(true) 打开画面检测框。',
+    'color:#7c5cf7;font-weight:bold');
+}
+
+installDebugAPI();
 initUI();
