@@ -290,6 +290,31 @@ export function showCover(which, text) {
   if (which === 'errorCover' && text) el('errorText').textContent = text;
 }
 
+/** 底部状态栏：参考截图「正对摄像头，发型实时跟随中」 */
+let _stageStatusVisible = false;
+export function setStageStatus(visible, yawDeg) {
+  const bar = el('stageStatus');
+  if (!bar) return;
+  if (!visible) {
+    bar.classList.add('hidden');
+    _stageStatusVisible = false;
+    return;
+  }
+  bar.classList.remove('hidden');
+  _stageStatusVisible = true;
+  const a = Math.abs(yawDeg || 0);
+  if (a <= 15) {
+    bar.textContent = '正对摄像头，发型实时跟随中';
+    bar.className = 'stage-status ok';
+  } else if (a <= 30) {
+    bar.textContent = '微侧脸，发型略有偏差';
+    bar.className = 'stage-status warn';
+  } else {
+    bar.textContent = '侧脸角度较大，建议转回正面';
+    bar.className = 'stage-status warn';
+  }
+}
+
 /** 渲染摄像头下拉（授权后 enumerateDevices 才能拿到真实设备名） */
 export function renderCameraList(list, activeId) {
   const sel = el('camSelect');

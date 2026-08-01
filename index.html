@@ -34,8 +34,8 @@
       </svg>
     </span>
     <div class="brand-text">
-      <h1>AI 智能发型推荐</h1>
-      <p>脸型分析 · 3D 发型 AR 实时试戴</p>
+      <h1>AI 智能发型魔镜</h1>
+      <p>脸型分析 · 2D 发型实时试戴</p>
     </div>
   </div>
   <div class="topbar-right">
@@ -62,6 +62,9 @@
 
       <!-- 正面/侧脸 角标：侧转时提示 2D 贴图会有偏差 -->
       <div class="face-chip ok hidden" id="faceMode">正脸 · 效果最佳</div>
+
+      <!-- 底部状态：参考截图「正对摄像头，发型实时跟随中」 -->
+      <div class="stage-status ok hidden" id="stageStatus">正对摄像头，发型实时跟随中</div>
 
       <!-- 未开启摄像头时的引导层 -->
       <div class="stage-cover" id="stageCover">
@@ -216,8 +219,8 @@
 </div>
 
 <footer class="footer">
-  <span>MediaPipe FaceLandmarker · Three.js · 纯前端实现</span>
-  <span>当前为 <b>2D 图片精灵</b>试戴：把发型图片放进 <code>public/images/hair/</code>（建议透明背景 PNG 或已压缩的 WebP），并在 <code>hairDatabase.json</code> 登记 <code>imageUrl</code> 即可。若想换回真实 3D 模型，填 <code>modelUrl</code> 并把 <code>config.js</code> 的 <code>render.mode</code> 改为 <code>'3d'</code>。</span>
+  <span>MediaPipe FaceLandmarker · 纯前端 2D 叠加实现</span>
+  <span>当前为 <b>2D 发型图片叠加</b>试戴模式。把透明背景 PNG 放进 <code>public/images/hair/</code> 并在 <code>hairDatabase.json</code> 登记即可。备选：填 <code>modelUrl</code> 并改 <code>config.js</code> 的 <code>render.mode</code> 为 <code>'3d'</code> ���回 3D 模型。</span>
 </footer>
 
 <script type="module" src="./js/main.js"></script>

@@ -10,6 +10,7 @@ import { FaceTracker } from './faceTracker.js';
 import { measure, classify, ShapeAccumulator, LM } from './faceShape.js';
 import { recommend, getStyle, loadHairDB } from './hairDB.js';
 import { ARScene } from './arScene.js';
+import { HairOverlay } from './hairOverlay.js';
 import * as UI from './ui.js';
 
 /* ------------------------------------------------------------------ */
@@ -19,7 +20,8 @@ const state = {
   running: false,
   stream: null,
   tracker: null,
-  ar: null,
+  ar: null,            // Three.js AR 场景（3D 后备）
+  overlay: null,       // 2D 发型图片叠加层（主力模式）
   cameraDeviceId: '',   // 用户在下拉里选的具体摄像头；空=系统默认
   cameraList: [],       // 已枚举到的摄像头输入设备
   acc: new ShapeAccumulator(CONFIG.analysis.emaAlpha, CONFIG.analysis.minSamples),
@@ -116,7 +118,15 @@ function initUI() {
   loadHairDB().then(() => {
     refreshStyleList();
     // 若已开启过摄像头，让当前所选发型按新数据刷新
-    if (state.ar) state.ar.setStyle(getStyle(state.styleId), state.colorHex);
+    if (state.ar || state.overlay) {
+      const s = getStyle(state.styleId);
+      let svgUrl = null;
+      if (!s.imageUrl) {
+        try { svgUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(UI.hairOverlaySVG(s)); } catch (_) {}
+      }
+      if (state.ar) state.ar.setStyle(s, state.colorHex);
+      if (state.overlay) state.overlay.setStyle(s, svgUrl);
+    }
   });
 }
 
@@ -136,9 +146,10 @@ function onTuneChange() {
   document.querySelector('[data-for=tuneZ]').textContent = z.toFixed(2);
   document.querySelector('[data-for=tuneS]').textContent = s.toFixed(2);
   state.ar?.setAdjust({ y, z, scale: s });
+  state.overlay?.setScale(s);       // 整体大小
 }
 
-/** 发型位置偏移（X/Y/Z，单位：头宽）—— 真实 3D 模型对齐用 */
+/** 发型位置偏移（X/Y/Z，单位：头宽）—— 同时控制 2D 叠加层和 3D 模型 */
 function onOffsetChange() {
   const x = parseFloat(UI.el('offsetX').value);
   const y = parseFloat(UI.el('offsetY').value);
@@ -147,6 +158,7 @@ function onOffsetChange() {
   document.querySelector('[data-for=offsetY]').textContent = y.toFixed(2);
   document.querySelector('[data-for=offsetZ]').textContent = z.toFixed(2);
   state.ar?.setOffset(x, y, z);
+  state.overlay?.setOffset(x, y, z);   // X/Y/Z 偏移
 }
 
 /** 按当前脸型 + 筛选条件刷新发型卡片 */
@@ -160,8 +172,20 @@ async function pickStyle(id, byUser = true) {
   state.styleId = id;
   refreshStyleList();
   const style = getStyle(id);
-  // 统一交由 ARScene 呈现：sprite 模式加载图片精灵；3d 模式加载模型。
-  // 推荐逻辑（recommend + 脸型筛选）完全不变，这里只负责"把选中发型画出来"。
+  // 为无图片的款式生成 SVG 透明头发轮廓 data URL
+  let svgDataUrl = null;
+  if (!style.imageUrl) {
+    try {
+      const svg = UI.hairOverlaySVG(style);
+      svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    } catch (_) { /* SVG 生成失败则不传 */ }
+  }
+  // 2D 叠加层（主力）：加载发型图片/精灵，叠加到视频上
+  if (state.overlay) {
+    await state.overlay.setStyle(style, svgDataUrl);
+    state.overlay.resetSmooth();
+  }
+  // Three.js AR（后备/调试用）：3D 模型或程序化发型
   if (state.ar) await state.ar.setStyle(style, state.colorHex);
 }
 
@@ -212,7 +236,7 @@ async function start() {
   UI.el('stage').style.aspectRatio = `${vw} / ${vh}`;
   overlay.width = vw; overlay.height = vh;
 
-  // 2) Three.js 场景
+  // 2) Three.js 场景（3D 后备 / 调试用）
   if (!state.ar) {
     state.ar = new ARScene(arCanvas);
     state.ar.setOcclusion(UI.el('occChk').checked);
@@ -223,7 +247,21 @@ async function start() {
     onTuneChange();
   }
   state.ar.setVideoSize(vw, vh);
-  await state.ar.setStyle(getStyle(state.styleId), state.colorHex);
+
+  // 2.5) 2D 发型叠加层（主力模式：纯 DOM/CSS 图片叠加）
+  if (!state.overlay) {
+    state.overlay = new HairOverlay(UI.el('stage'));
+  }
+
+  const initialStyle = getStyle(state.styleId);
+  let initSvgUrl = null;
+  if (!initialStyle.imageUrl) {
+    try { initSvgUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(UI.hairOverlaySVG(initialStyle)); } catch (_) {}
+  }
+  await Promise.all([
+    state.ar.setStyle(initialStyle, state.colorHex),
+    state.overlay.setStyle(initialStyle, initSvgUrl),
+  ]);
 
   // 3) 人脸检测模型
   if (!state.tracker) {
@@ -258,6 +296,7 @@ function stop() {
   video.srcObject = null;
   octx.clearRect(0, 0, overlay.width, overlay.height);
   if (state.ar) { state.ar.anchor.visible = false; state.ar.render(); }
+  if (state.overlay) state.overlay.hide();
   UI.hideHud();
   UI.showCover('stageCover');
   UI.el('toggleCamBtn').textContent = '开启摄像头';
@@ -369,15 +408,23 @@ function loop(now) {
     const res = state.tracker?.detect(video, now);
     if (res) {
       state.lastPose = state.ar.updateFromFace(res.landmarks, res.matrix);
+      // 2D 叠加层：用关键点直接定位（比 3D 投影更直观）
+      if (state.overlay) {
+        state.overlay.updateFromFace(res.landmarks, state.lastPose, vw, vh);
+      }
       handleAnalysis(res.landmarks);
       if (state.showMesh) drawLandmarks(res.landmarks);
       else if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
       // 正面/侧脸 提示：根据偏航角更新角标（侧脸时 2D 贴图会有偏差）
       if (state.lastPose) UI.setFaceMode(state.lastPose.yawDeg);
+      // 底部状态栏
+      UI.setStageStatus(true, state.lastPose?.yawDeg);
     } else {
       state.ar.onFaceLost();
+      if (state.overlay) state.overlay.hide();
       UI.setHud('没有检测到人脸，请正对摄像头');
       UI.setFaceMode(null);          // 丢失人脸：隐藏正/侧脸角标
+      UI.setStageStatus(false);       // 隐藏底部状态栏
       if (octx) octx.clearRect(0, 0, overlay.width, overlay.height);
     }
   }
